@@ -16,10 +16,7 @@ private:
 
 public:
     AugmentedStack(){
-        stack = MyStack<T>();
-
         sum = 0;
-        min_elements = MyStack<T>();
     }
 
     void push(T el){
@@ -47,9 +44,12 @@ public:
     }
 
     T average(){
+        if(stack.empty()){
+            throw underflow_error("Empty stack -> no average");
+        }
         return sum / stack.size();
     }
-    T min(){
+    const T& min() const{
         return min_elements.top();
     }
 
