@@ -1,9 +1,7 @@
 #include <iostream>
-#include <string>
 #include <stdexcept>
 #include <cassert>
 #include <vector>
-#include <iostream>
 #include "my_stack.h" 
 
 using namespace std;

@@ -88,17 +88,17 @@ public:
     }
 
     //get size
-    size_t size(){
+    size_t size() const{
         return curr_size;
     }
 
     //is empty
-    bool empty(){
+    bool empty() const{
         return curr_size == 0;
     }
 
     //max elements in stack before resize() is called
-    size_t maximum_size(){
+    size_t maximum_size() const{
         return max_size;
     }
 

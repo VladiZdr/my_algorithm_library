@@ -2,10 +2,12 @@
 #include <vector>
 #include <stdexcept>
 #include <iostream>
-using namespace std;
+#include <type_traits>
+
 
 template <typename T>
 class AugmentedStack{
+static_assert(std::is_arithmetic<T>::value);
 
 private:
     MyStack<T> stack;
@@ -15,7 +17,7 @@ private:
 
 public:
     AugmentedStack(){
-        sum = 0;
+        sum = T{};
     }
 
     void push(T el){
@@ -23,7 +25,7 @@ public:
 
         stack.push(el);
         
-        if(min_elements.empty() || min_elements.top() >= el){
+        if(min_elements.empty() || el <= min_elements.top()){
             min_elements.push(el);
         }
     }
@@ -46,9 +48,12 @@ public:
         if(stack.empty()){
             throw underflow_error("Empty stack -> no average");
         }
-        return sum / stack.size();
+        return sum / static_cast<T>(stack.size());
     }
     const T& min() const{
+        if(stack.empty()){
+            throw underflow_error("Empty stack -> no min");
+        }
         return min_elements.top();
     }
 
