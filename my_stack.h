@@ -37,6 +37,7 @@ public:
     MyStack(MyStack&& other) noexcept
         :max_size(other.max_size), curr_size(other.curr_size), data(other.data){
 
+            if (this == &other) return;
             other.data = nullptr;
             other.curr_size = 0;
             other.max_size = 0;
@@ -75,9 +76,7 @@ public:
             resize();
         }
 
-        data[curr_size] = el;
-
-        curr_size++;
+        data[curr_size++] = el;
     }
 
     //last element
@@ -130,7 +129,7 @@ public:
 
         T* tmp = new T[max_size];
         try{
-            copy(data, data + curr_size, tmp);
+            move(data, data + curr_size, tmp);
         }
         catch(...){
             delete[] tmp;
