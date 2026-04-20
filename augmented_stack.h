@@ -1,7 +1,6 @@
 #include "my_stack.h"
 #include <vector>
 #include <stdexcept>
-#include <iostream>
 #include <type_traits>
 
 
