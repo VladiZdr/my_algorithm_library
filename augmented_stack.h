@@ -43,7 +43,7 @@ public:
         return tmp;
     }
 
-    T average(){
+    double average() const{
         if(stack.empty()){
             throw underflow_error("Empty stack -> no average");
         }
