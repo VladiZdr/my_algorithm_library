@@ -131,7 +131,6 @@ int main(){
         assert(b.size() == a.size());
         assert(b.top() == a.top());
     }
-
     {
         // Test 2: no shallow copy
         MyStack<int> a;
@@ -147,7 +146,6 @@ int main(){
         assert(b.size() == 2);
         assert(b.top() == 2);
     }
-
     {
         // Test 3: full content
         MyStack<int> a;
@@ -215,7 +213,6 @@ int main(){
 
         assert(s.size() == 1);
     }
-
     {
         MyStack<int> s;
         s.push(10);

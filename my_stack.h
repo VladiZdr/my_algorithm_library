@@ -1,6 +1,5 @@
 #include <vector>
 #include <stdexcept>
-#include <iostream>
 #include <algorithm>
 #include <memory>
 using namespace std;
@@ -63,13 +62,13 @@ public:
     MyStack& operator=(const MyStack& other){
         if(this != &other){
 
-            delete[] data;
+            T* new_data = new T[other.max_size];
+            copy(other.data, other.data + other.curr_size, new_data);
 
+            delete[] data;
+            data = new_data;
             max_size = other.max_size;
             curr_size = other.curr_size;
-
-            data = new T[max_size];
-            copy(other.data, other.data + curr_size, data);
 
         }
 
