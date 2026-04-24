@@ -5,19 +5,35 @@ private:
     Node<T>* prev_;
     T key_;
     T val_;
+
+    //destroy
+    void erase(){
+        if(next_ != nullptr){
+            next_->set_prev(prev_);
+        }
+        if(prev_ != nullptr){
+            prev_->set_next(next_);
+        }
+        next_ = nullptr;
+        prev_ = nullptr;
+        key_ = T{};
+        val_ = T{};
+    }
 public:
 
     //constructors
     Node(){
-        next = nullptr;
-        prev = nullptr;
-        key = T{};
-        val = T{};
+        next_ = nullptr;
+        prev_ = nullptr;
+        key_ = T{};
+        val_ = T{};
     }
 
     Node(const T& key, const T& val){
         this.key_ = key;
         this.val_ = val;
+        next_ = nullptr;
+        prev_ = nullptr;
     }
 
     Node(Node<T>* next, Node<T>* prev, const T& key, const T& val){
@@ -34,8 +50,8 @@ public:
         this.val_ = other.get_val();
     }
     
-    Node(const Node<T>&& other) noexcept{
-        if(this == other) return;
+    Node(Node<T>&& other) noexcept{
+        if(this == &other) return;
 
         this.next_ = other.get_next();
         this.prev_ = other.get_prev();
@@ -49,7 +65,7 @@ public:
     }
 
     Node& operator=(const Node& other){
-        if(this != other){
+        if(this != &other){
             this.next_ = other.get_next();
             this.prev_ = other.get_prev();
             this.key_ = other.get_key();
@@ -85,11 +101,11 @@ public:
         prev_ = new_prev;
     }
     
-    void set_key(Node<T>* new_key){
+    void set_key(const T& new_key){
         key_ = new_key;
     }
 
-    void set_val(Node<T>* new_val){
+    void set_val(const T& new_val){
         val_ = new_val;
     }
 };
