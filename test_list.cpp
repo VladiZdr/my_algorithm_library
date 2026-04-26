@@ -1413,5 +1413,325 @@ int main() {
 }
 
     std::cout << "Erase tests passed!\n";
+
+// MERGE TEST 1: this = other (self-merge)
+{
+    Node<int>* n1 = new Node<int>(10, 100);
+    Node<int>* n2 = new Node<int>(20, 200);
+    Node<int>* n3 = new Node<int>(30, 300);
+
+    MyList<int> l;
+    l.insert(n1);
+    l.insert(n2);
+    l.insert(n3);
+
+    l.merge(l);
+
+    assert(l.length() == 3);
+    Node<int>* a = l.begin();
+    Node<int>* b = a->get_next();
+    Node<int>* c = b->get_next();
+
+    assert(a->get_key() == 10);
+    assert(b->get_key() == 20);
+    assert(c->get_key() == 30);
+
+    delete n1;
+    delete n2;
+    delete n3;
+}
+// MERGE TEST 2: this->start = nullptr
+{
+    MyList<int> l1;
+
+    Node<int>* n1 = new Node<int>(10, 100);
+    Node<int>* n2 = new Node<int>(20, 200);
+    Node<int>* n3 = new Node<int>(30, 300);
+
+    MyList<int> l2;
+    l2.insert(n1);
+    l2.insert(n2);
+    l2.insert(n3);
+
+    l1.merge(l2);
+
+    assert(l1.length() == 3);
+    assert(l2.begin() == nullptr);
+    assert(l2.length() == 0);
+
+    Node<int>* a = l1.begin();
+    Node<int>* b = a->get_next();
+    Node<int>* c = b->get_next();
+
+    assert(a->get_key() == 10);
+    assert(b->get_key() == 20);
+    assert(c->get_key() == 30);
+
+    delete n1;
+    delete n2;
+    delete n3;
+}
+// MERGE TEST 3: other->start = nullptr
+{
+    Node<int>* n1 = new Node<int>(10, 100);
+    Node<int>* n2 = new Node<int>(20, 200);
+    Node<int>* n3 = new Node<int>(30, 300);
+
+    MyList<int> l1;
+    l1.insert(n1);
+    l1.insert(n2);
+    l1.insert(n3);
+
+    MyList<int> l2;
+    l1.merge(l2);
+
+    assert(l1.length() == 3);
+    assert(l2.begin() == nullptr);
+    assert(l2.length() == 0);
+
+    Node<int>* a = l1.begin();
+    Node<int>* b = a->get_next();
+    Node<int>* c = b->get_next();
+
+    assert(a->get_key() == 10);
+    assert(b->get_key() == 20);
+    assert(c->get_key() == 30);
+
+    delete n1;
+    delete n2;
+    delete n3;
+}
+// MERGE TEST 4: other has 1 node merged in middle of 4-node this
+{
+    Node<int>* a1 = new Node<int>(1, 10);
+    Node<int>* a2 = new Node<int>(2, 20);
+    Node<int>* a4 = new Node<int>(4, 40);
+    Node<int>* a5 = new Node<int>(5, 50);
+    Node<int>* b3 = new Node<int>(3, 30);
+
+    MyList<int> l1;
+    l1.insert(a1);
+    l1.insert(a2);
+    l1.insert(a4);
+    l1.insert(a5);
+
+    MyList<int> l2;
+    l2.insert(b3);
+
+    l1.merge(l2);
+
+    assert(l1.length() == 5);
+    assert(l2.begin() == nullptr);
+    assert(l2.length() == 0);
+
+    Node<int>* n1p = l1.begin();
+    Node<int>* n2p = n1p->get_next();
+    Node<int>* n3p = n2p->get_next();
+    Node<int>* n4p = n3p->get_next();
+    Node<int>* n5p = n4p->get_next();
+
+    assert(n1p->get_key() == 1);
+    assert(n2p->get_key() == 2);
+    assert(n3p->get_key() == 3);
+    assert(n4p->get_key() == 4);
+    assert(n5p->get_key() == 5);
+
+    delete a1;
+    delete a2;
+    delete a4;
+    delete a5;
+    delete b3;
+}
+// MERGE TEST 5: l1 = 2; l2 = 1;3;4;5;
+{
+    Node<int>* a2 = new Node<int>(2, 20);
+
+    Node<int>* b1 = new Node<int>(1, 10);
+    Node<int>* b3 = new Node<int>(3, 30);
+    Node<int>* b4 = new Node<int>(4, 40);
+    Node<int>* b5 = new Node<int>(5, 50);
+
+    MyList<int> l1;
+    l1.insert(a2);
+
+    MyList<int> l2;
+    l2.insert(b1);
+    l2.insert(b3);
+    l2.insert(b4);
+    l2.insert(b5);
+
+    l1.merge(l2);
+
+    assert(l1.length() == 5);
+    assert(l2.begin() == nullptr);
+    assert(l2.length() == 0);
+
+    Node<int>* n1p = l1.begin();
+    Node<int>* n2p = n1p->get_next();
+    Node<int>* n3p = n2p->get_next();
+    Node<int>* n4p = n3p->get_next();
+    Node<int>* n5p = n4p->get_next();
+
+    assert(n1p->get_key() == 1);
+    assert(n2p->get_key() == 2);
+    assert(n3p->get_key() == 3);
+    assert(n4p->get_key() == 4);
+    assert(n5p->get_key() == 5);
+
+    delete a2;
+    delete b1;
+    delete b3;
+    delete b4;
+    delete b5;
+}
+// MERGE TEST 6: l1 = 1;3;5;7; l2 = 2;4;6;8;
+{
+    Node<int>* a1 = new Node<int>(1, 10);
+    Node<int>* a3 = new Node<int>(3, 30);
+    Node<int>* a5 = new Node<int>(5, 50);
+    Node<int>* a7 = new Node<int>(7, 70);
+
+    Node<int>* b2 = new Node<int>(2, 20);
+    Node<int>* b4 = new Node<int>(4, 40);
+    Node<int>* b6 = new Node<int>(6, 60);
+    Node<int>* b8 = new Node<int>(8, 80);
+
+    MyList<int> l1;
+    l1.insert(a1);
+    l1.insert(a3);
+    l1.insert(a5);
+    l1.insert(a7);
+
+    MyList<int> l2;
+    l2.insert(b2);
+    l2.insert(b4);
+    l2.insert(b6);
+    l2.insert(b8);
+
+    l1.merge(l2);
+
+    assert(l1.length() == 8);
+    assert(l2.begin() == nullptr);
+    assert(l2.length() == 0);
+
+    int expected[] = {1,2,3,4,5,6,7,8};
+    Node<int>* cur = l1.begin();
+    for(int i = 0; i < 8; ++i){
+        assert(cur != nullptr);
+        assert(cur->get_key() == expected[i]);
+        cur = cur->get_next();
+    }
+    assert(cur == nullptr);
+
+    delete a1;
+    delete a3;
+    delete a5;
+    delete a7;
+    delete b2;
+    delete b4;
+    delete b6;
+    delete b8;
+}
+// MERGE TEST 7: l1 = 1;2;3;4;5;7 with l2 = 6;8;9;
+{
+    Node<int>* a1 = new Node<int>(1, 10);
+    Node<int>* a2 = new Node<int>(2, 20);
+    Node<int>* a3 = new Node<int>(3, 30);
+    Node<int>* a4 = new Node<int>(4, 40);
+    Node<int>* a5 = new Node<int>(5, 50);
+    Node<int>* a7 = new Node<int>(7, 70);
+
+    Node<int>* b6 = new Node<int>(6, 60);
+    Node<int>* b8 = new Node<int>(8, 80);
+    Node<int>* b9 = new Node<int>(9, 90);
+
+    MyList<int> l1;
+    l1.insert(a1);
+    l1.insert(a2);
+    l1.insert(a3);
+    l1.insert(a4);
+    l1.insert(a5);
+    l1.insert(a7);
+
+    MyList<int> l2;
+    l2.insert(b6);
+    l2.insert(b8);
+    l2.insert(b9);
+
+    l1.merge(l2);
+
+    assert(l1.length() == 9);
+    assert(l2.begin() == nullptr);
+    assert(l2.length() == 0);
+
+    int expected[] = {1,2,3,4,5,6,7,8,9};
+    Node<int>* cur = l1.begin();
+    for(int i = 0; i < 9; ++i){
+        assert(cur != nullptr);
+        assert(cur->get_key() == expected[i]);
+        cur = cur->get_next();
+    }
+    assert(cur == nullptr);
+
+    delete a1;
+    delete a2;
+    delete a3;
+    delete a4;
+    delete a5;
+    delete a7;
+    delete b6;
+    delete b8;
+    delete b9;
+}
+// MERGE TEST 8: l1 = 4;5; l2 = 1;2;3;6;7;8;
+{
+    Node<int>* a4 = new Node<int>(4, 40);
+    Node<int>* a5 = new Node<int>(5, 50);
+
+    Node<int>* b1 = new Node<int>(1, 10);
+    Node<int>* b2 = new Node<int>(2, 20);
+    Node<int>* b3 = new Node<int>(3, 30);
+    Node<int>* b6 = new Node<int>(6, 60);
+    Node<int>* b7 = new Node<int>(7, 70);
+    Node<int>* b8 = new Node<int>(8, 80);
+
+    MyList<int> l1;
+    l1.insert(a4);
+    l1.insert(a5);
+
+    MyList<int> l2;
+    l2.insert(b1);
+    l2.insert(b2);
+    l2.insert(b3);
+    l2.insert(b6);
+    l2.insert(b7);
+    l2.insert(b8);
+
+    l1.merge(l2);
+
+    assert(l1.length() == 8);
+    assert(l2.begin() == nullptr);
+    assert(l2.length() == 0);
+
+    int expected[] = {1,2,3,4,5,6,7,8};
+    Node<int>* cur = l1.begin();
+    for(int i = 0; i < 8; ++i){
+        assert(cur != nullptr);
+        assert(cur->get_key() == expected[i]);
+        cur = cur->get_next();
+    }
+    assert(cur == nullptr);
+
+    delete a4;
+    delete a5;
+    delete b1;
+    delete b2;
+    delete b3;
+    delete b6;
+    delete b7;
+    delete b8;
+}
+
+    std::cout << "Merge tests passed!\n";
     return 0;
 }
