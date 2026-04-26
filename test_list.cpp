@@ -1376,5 +1376,42 @@ int main() {
 }
 
     std::cout << "Rank tests passed!\n";
+
+// ERASE TEST: after erase, start == nullptr, size == 0, original external nodes still exist
+{
+    Node<int>* n1 = new Node<int>(10, 100);
+    Node<int>* n2 = new Node<int>(20, 200);
+    Node<int>* n3 = new Node<int>(30, 300);
+
+    MyList<int> l;
+    l.insert(n1);
+    l.insert(n2);
+    l.insert(n3);
+
+    l.erase();
+
+    assert(l.begin() == nullptr);
+    assert(l.length() == 0);
+
+    // original external nodes still exist
+    assert(n1 != nullptr);
+    assert(n2 != nullptr);
+    assert(n3 != nullptr);
+
+    assert(n1->get_key() == 10);
+    assert(n1->get_val() == 100);
+
+    assert(n2->get_key() == 20);
+    assert(n2->get_val() == 200);
+
+    assert(n3->get_key() == 30);
+    assert(n3->get_val() == 300);
+
+    delete n1;
+    delete n2;
+    delete n3;
+}
+
+    std::cout << "Erase tests passed!\n";
     return 0;
 }
