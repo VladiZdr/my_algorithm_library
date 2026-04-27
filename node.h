@@ -18,6 +18,8 @@ private:
         }
         next_ = nullptr;
         prev_ = nullptr;
+        up_ = nullptr;
+        down_ = nullptr;
         key_ = K{};
         val_ = V{};
     }
@@ -43,32 +45,32 @@ public:
     }
 
     Node(Node<K,V>* next, Node<K,V>* prev, Node<K,V>* up, Node<K,V>* down, const K& key, const V& val){
-        this.next_ = next;
-        this.prev_ = prev;
-        this.up_ = up;
-        this.down_ = down;
-        this.key_ = key;
-        this.val_ = val;
+        this->next_ = next;
+        this->prev_ = prev;
+        this->up_ = up;
+        this->down_ = down;
+        this->key_ = key;
+        this->val_ = val;
     }
 
     Node(const Node<K,V>& other){
-        this.next_ = other.get_next();
-        this.prev_ = other.get_prev();
-        this.down_ = other.get_down();
-        this.up_ = other.get_up();
-        this.key_ = other.get_key();
-        this.val_ = other.get_val();
+        this->next_ = other.get_next();
+        this->prev_ = other.get_prev();
+        this->down_ = other.get_down();
+        this->up_ = other.get_up();
+        this->key_ = other.get_key();
+        this->val_ = other.get_val();
     }
     
     Node(Node<K,V>&& other) noexcept{
         if(this == &other) return;
 
-        this.next_ = other.get_next();
-        this.prev_ = other.get_prev();
-        this.up_ = other.get_up();
-        this.down_ = other.get_down();
-        this.key_ = other.get_key();
-        this.val_ = other.get_val();
+        this->next_ = other.get_next();
+        this->prev_ = other.get_prev();
+        this->up_ = other.get_up();
+        this->down_ = other.get_down();
+        this->key_ = other.get_key();
+        this->val_ = other.get_val();
 
         other.set_next(nullptr);
         other.set_prev(nullptr);
@@ -80,12 +82,12 @@ public:
 
     Node& operator=(const Node& other){
         if(this != &other){
-            this.next_ = other.get_next();
-            this.prev_ = other.get_prev();
-            this.up_ = other.get_up();
-            this.down_ = other.get_down();
-            this.key_ = other.get_key();
-            this.val_ = other.get_val();
+            this->next_ = other.get_next();
+            this->prev_ = other.get_prev();
+            this->up_ = other.get_up();
+            this->down_ = other.get_down();
+            this->key_ = other.get_key();
+            this->val_ = other.get_val();
         }
 
         return *this;
