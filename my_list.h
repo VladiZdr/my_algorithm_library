@@ -203,6 +203,22 @@ public:
         return tmp;
     }
 
+    //return node with key >= k or tail if k > all keys starting from specific node
+    Node<K, V>* find_from(const Node<K, V>* start_node, const K& k) const{
+        Node<K, V>* tmp = start_node;
+        if(tmp == nullptr){
+            return nullptr;
+        }
+
+        while(tmp->get_next() != nullptr){
+            if(tmp->get_key() >= k) return tmp;
+
+            tmp = tmp->get_next();
+        }
+
+        return tmp;
+    }
+
     //lower/upper_bound -> nullptr if not found
     Node<K, V>* lower_bound(const K& k) const{
         Node<K, V>* tmp = start;
