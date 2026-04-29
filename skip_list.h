@@ -45,6 +45,7 @@ public:
         return levels;
     }
     void set_levels(std::vector<MyList<K,V>*> new_levels){
+        erase();
         levels = new_levels;
     }
 
@@ -88,7 +89,21 @@ public:
     }
 
     bool remove(const K& key){
+        Node<K,V>* node = find(key);
+        if(node == nullptr){
+            return false;
+        }
         
+        Node<K,V>* curr = node;
+        while(curr != nullptr){
+            curr->get_prev()->set_next(curr->get_next());
+            curr->get_next()->set_prev(curr->get_prev());
+            curr = curr->get_up();
+            if(curr != nullptr){
+                delete curr->get_down();
+            }
+        }
+        return true;
     }
 
     //helper functions

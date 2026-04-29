@@ -202,7 +202,8 @@ public:
         }
 
         if(tmp->get_key() == k) return tmp;
-        return tmp->get_prev() == nullptr ? start : tmp->get_prev();
+        if(tmp->get_key() > k) return tmp->get_prev() == nullptr ? start : tmp->get_prev();
+        return tmp;
     }
 
     //return node with key = k or the node with the smallest key > k starting from start_node
@@ -224,7 +225,8 @@ public:
         }
 
         if(tmp->get_key() == k) return tmp;
-        return tmp->get_prev() == nullptr ? start_node : tmp->get_prev();
+        if(tmp->get_key() > k) return tmp->get_prev() == nullptr ? start_node : tmp->get_prev();
+        return tmp;
     }
 
     //lower/upper_bound -> nullptr if not found
