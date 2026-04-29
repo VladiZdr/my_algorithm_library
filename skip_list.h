@@ -50,12 +50,16 @@ public:
     }
 
     Node<K,V>* find(const K& key){
+        //start from top level find
         size_t curr_level = levels.size() - 1;
+        //find in top level node with largest key <= key
         Node<K,V>* curr_find = levels[curr_level]->find(key);
 
         while(curr_level > 0){
+            //get down node
             curr_level--;
             curr_find = curr_find->get_down();
+            //find in next level node with largest key <= key
             curr_find = levels[curr_level]->find_from(curr_find, key);
         }
 
@@ -89,6 +93,7 @@ public:
     }
 
     bool remove(const K& key){
+        //find node to remove
         Node<K,V>* node = find(key);
         if(node == nullptr){
             return false;
@@ -96,7 +101,7 @@ public:
         
         Node<K,V>* curr = node;
         Node<K,V>* next = nullptr;
-
+        //remove from each level
         while(curr != nullptr){
             curr->get_prev()->set_next(curr->get_next());
             curr->get_next()->set_prev(curr->get_prev());
