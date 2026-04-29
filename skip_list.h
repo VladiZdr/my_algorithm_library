@@ -49,8 +49,18 @@ public:
     }
 
     Node<K,V>* find(const K& key){
-        
+        size_t curr_level = levels.size() - 1;
+        Node<K,V>* curr_find = levels[curr_level]->find(key);
+
+        while(curr_level > 0){
+            curr_level--;
+            curr_find = curr_find->get_down();
+            curr_find = levels[curr_level]->find_from(curr_find, key);
+        }
+
+        return curr_find;
     }
+
     void insert(Node<K,V>& node){        
         size_t curr_level = levels.size() - 1;
         size_t random_levels = get_random_levels() + 1;

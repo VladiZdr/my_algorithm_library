@@ -114,7 +114,7 @@ public:
     //insert without transfering ownership
     Node<K, V>* insert(Node<K, V>* new_node){
         if(new_node == nullptr){
-            return;
+            return nullptr;
         }
 
         Node<K, V>* el = new Node<K, V>(new_node->get_key(), new_node->get_val());
@@ -125,7 +125,7 @@ public:
         if(start == nullptr){
             start = el;
             size = 1;
-            return;
+            return el;
         }
 
         if(el->get_key() < start->get_key()){
@@ -133,7 +133,7 @@ public:
             start->set_prev(el);
             start = el;
             size++;
-            return;
+            return el;
         }
 
         Node<K, V>* tmp = start;
@@ -187,7 +187,7 @@ public:
         return nullptr;
     }
     
-    // Returns node with key >= k (lower bound), or tail if k > all keys
+    // Returns node with key = k or the node with the largest key < k or tail of list
     Node<K, V>* find(const K& k) const{
         Node<K, V>* tmp = start;
         if(tmp == nullptr){
@@ -195,28 +195,36 @@ public:
         }
 
         while(tmp->get_next() != nullptr){
-            if(tmp->get_key() >= k) return tmp;
+            if(tmp->get_key() == k) return tmp;
+            if(tmp->get_key() > k) return tmp->get_prev() == nullptr ? start : tmp->get_prev();
 
             tmp = tmp->get_next();
         }
 
-        return tmp;
+        if(tmp->get_key() == k) return tmp;
+        return tmp->get_prev() == nullptr ? start : tmp->get_prev();
     }
 
-    //return node with key >= k or tail if k > all keys starting from specific node
-    Node<K, V>* find_from(const Node<K, V>* start_node, const K& k) const{
+    //return node with key = k or the node with the smallest key > k starting from start_node
+    Node<K, V>* find_from(Node<K, V>* start_node, const K& k) const{
+        if(start_node == nullptr){
+            return find(k);
+        }
+        
         Node<K, V>* tmp = start_node;
         if(tmp == nullptr){
             return nullptr;
         }
 
         while(tmp->get_next() != nullptr){
-            if(tmp->get_key() >= k) return tmp;
+            if(tmp->get_key() == k) return tmp;
+            if(tmp->get_key() > k) return tmp->get_prev() == nullptr ? start_node : tmp->get_prev();
 
             tmp = tmp->get_next();
         }
 
-        return tmp;
+        if(tmp->get_key() == k) return tmp;
+        return tmp->get_prev() == nullptr ? start_node : tmp->get_prev();
     }
 
     //lower/upper_bound -> nullptr if not found

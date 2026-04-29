@@ -793,6 +793,98 @@ int main() {
 
     std::cout << "Get_Node tests passed!\n";
 
+    // FIND TESTS
+    {
+        Node<int, int>* n1 = new Node<int, int>(10, 100);
+        Node<int, int>* n2 = new Node<int, int>(20, 200);
+        Node<int, int>* n3 = new Node<int, int>(30, 300);
+
+        MyList<int, int> l;
+        l.insert(n1);
+        l.insert(n2);
+        l.insert(n3);
+
+        // Test 1: node not in list
+        Node<int, int>* result1 = l.find(25);
+        assert(result1 != nullptr);
+        assert(result1->get_key() == 20); // largest key < 25
+
+        // Test 2: node head in 3 node list
+        Node<int, int>* result2 = l.find(10);
+        assert(result2 != nullptr);
+        assert(result2 == l.begin());
+        assert(result2->get_key() == 10);
+
+        // Test 3: node tail in 3 node list
+        Node<int, int>* result3 = l.find(30);
+        assert(result3 != nullptr);
+        assert(result3->get_key() == 30);
+        assert(result3->get_next() == nullptr);
+
+        // Test 4: find(k) with k < head->k
+        Node<int, int>* result4 = l.find(5);
+        assert(result4 != nullptr);
+        assert(result4 == l.begin()); // should return head when k < head->k
+
+        // Test 5: find(k) with k > head->k && k < head->next->k
+        Node<int, int>* result5 = l.find(15);
+        assert(result5 != nullptr);
+        assert(result5->get_key() == 10); // largest key < 15
+
+        delete n1;
+        delete n2;
+        delete n3;
+    }
+
+    std::cout << "Find tests passed!\n";
+
+    // FIND_FROM TESTS
+    {
+        Node<int, int>* n1 = new Node<int, int>(10, 100);
+        Node<int, int>* n2 = new Node<int, int>(20, 200);
+        Node<int, int>* n3 = new Node<int, int>(30, 300);
+
+        MyList<int, int> l;
+        l.insert(n1);
+        l.insert(n2);
+        l.insert(n3);
+
+        Node<int, int>* head = l.begin();
+        Node<int, int>* tail = head->get_next()->get_next();
+
+        // Test 1: k not in list
+        Node<int, int>* result1 = l.find_from(head, 25);
+        assert(result1 != nullptr);
+        assert(result1->get_key() == 20); // largest key < 25
+
+        // Test 2: node head in 3 node list k = head->k
+        Node<int, int>* result2 = l.find_from(head, 10);
+        assert(result2 != nullptr);
+        assert(result2 == head);
+        assert(result2->get_key() == 10);
+
+        // Test 3: node tail in 3 node list
+        Node<int, int>* result3 = l.find_from(head, 30);
+        assert(result3 != nullptr);
+        assert(result3->get_key() == 30);
+        assert(result3->get_next() == nullptr);
+
+        // Test 4: k < node->k
+        Node<int, int>* result4 = l.find_from(head->get_next(), 15);
+        assert(result4 != nullptr);
+        assert(result4->get_key() == 10); // should return prev when k < node->k
+
+        // Test 5: k > node->k && k < node->next->k
+        Node<int, int>* result5 = l.find_from(head, 15);
+        assert(result5 != nullptr);
+        assert(result5->get_key() == 10); // largest key < 15
+
+        delete n1;
+        delete n2;
+        delete n3;
+    }
+
+    std::cout << "Find_From tests passed!\n";
     // LOWER_BOUND TESTS
     {
         Node<int, int>* n1 = new Node<int, int>(10, 100);
