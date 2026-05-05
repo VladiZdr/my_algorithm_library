@@ -85,11 +85,4 @@ public:
         return found;
     }
 
-    //lower/upper_bound
-    //successor/predeccessor
-    //delete
-    //update
-    //rank(x) -> k-th element
-    //LRU/MRU -> least/most recently used
-    //intersect / merge
 };

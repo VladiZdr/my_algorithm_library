@@ -75,18 +75,26 @@ public:
         return levels;
     }
 
+    //return node with the largest key <= k or tail of list
     Node<K,V>* find(const K& key){
         //start from top level find
         size_t curr_level = levels.size() - 1;
         //find in top level node with largest key <= key
         Node<K,V>* curr_find = levels[curr_level]->find(key);
 
-        while(curr_level > 0){
-            //get down node
+        while(curr_level > 0 && curr_find != nullptr){
+            //get down one level
             curr_level--;
             curr_find = curr_find->get_down();
+
             //find in next level node with largest key <= key
-            curr_find = levels[curr_level]->find_from(curr_find, key);
+            if(curr_find->get_key() > key){
+                curr_find = levels[curr_level]->find(key);
+            }
+            else{
+                curr_find = levels[curr_level]->find_from(curr_find, key);
+            }
+            
         }
 
         return curr_find;

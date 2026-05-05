@@ -187,7 +187,7 @@ public:
         return nullptr;
     }
     
-    // Returns node with key = k or the node with the largest key < k or tail of list
+    // Returns node with key = k or the node with the largest key < k of list
     Node<K, V>* find(const K& k) const{
         Node<K, V>* tmp = start;
         if(tmp == nullptr){
@@ -206,7 +206,7 @@ public:
         return tmp;
     }
 
-    //return node with key = k or the node with the largest key < k or tail of list from start_node
+    //return node with key = k or the node with the largest key < k of list from start_node
     Node<K, V>* find_from(Node<K, V>* start_node, const K& k) const{
         if(start_node == nullptr){
             return find(k);

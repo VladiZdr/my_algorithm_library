@@ -1019,6 +1019,211 @@ void test_insert_middle_node() {
     std::cout << "insert middle node test passed!" << std::endl;
 }
 
+// remove Tests
+void test_remove_head_node() {
+    SkipList<int, int> skiplist;
+    
+    // Insert multiple nodes
+    Node<int, int>* node1 = new Node<int, int>(10, 100);
+    Node<int, int>* node2 = new Node<int, int>(20, 200);
+    Node<int, int>* node3 = new Node<int, int>(30, 300);
+    skiplist.insert(node1);
+    skiplist.insert(node2);
+    skiplist.insert(node3);
+    
+    // Remove head node (smallest key)
+    bool result = skiplist.remove(10);
+    assert(result == true);
+    
+    // Verify node is removed from all levels
+    auto levels = skiplist.get_levels();
+    for (size_t i = 0; i < levels.size(); i++) {
+        assert(levels[i]->get_node(10) == nullptr);
+    }
+    
+    // Verify other nodes are still present
+    assert(levels[0]->get_node(20) != nullptr);
+    assert(levels[0]->get_node(30) != nullptr);
+    
+    // Verify list structure is correct
+    auto head_node = levels[0]->begin();
+    assert(head_node != nullptr);
+    assert(head_node->get_key() == 20);  // New head should be 20
+    
+    // Clean up original nodes
+    delete node1;
+    delete node2;
+    delete node3;
+    
+    std::cout << "remove head node test passed!" << std::endl;
+}
+
+void test_remove_middle_node() {
+    SkipList<int, int> skiplist;
+    
+    // Insert multiple nodes
+    Node<int, int>* node1 = new Node<int, int>(10, 100);
+    Node<int, int>* node2 = new Node<int, int>(20, 200);
+    Node<int, int>* node3 = new Node<int, int>(30, 300);
+    Node<int, int>* node4 = new Node<int, int>(40, 400);
+    skiplist.insert(node1);
+    skiplist.insert(node2);
+    skiplist.insert(node3);
+    skiplist.insert(node4);
+    
+    // Remove middle node
+    bool result = skiplist.remove(20);
+    assert(result == true);
+    
+    // Verify node is removed from all levels
+    auto levels = skiplist.get_levels();
+    for (size_t i = 0; i < levels.size(); i++) {
+        assert(levels[i]->get_node(20) == nullptr);
+    }
+    
+    // Verify other nodes are still present
+    assert(levels[0]->get_node(10) != nullptr);
+    assert(levels[0]->get_node(30) != nullptr);
+    assert(levels[0]->get_node(40) != nullptr);
+    
+    // Verify list structure is correct
+    auto node_10 = levels[0]->get_node(10);
+    auto node_30 = levels[0]->get_node(30);
+    assert(node_10->get_next()->get_key() == 30);  // 10 should point to 30
+    assert(node_30->get_prev()->get_key() == 10);  // 30 should point back to 10
+    
+    // Clean up original nodes
+    delete node1;
+    delete node2;
+    delete node3;
+    delete node4;
+    
+    std::cout << "remove middle node test passed!" << std::endl;
+}
+
+void test_remove_tail_node() {
+    SkipList<int, int> skiplist;
+    
+    // Insert multiple nodes
+    Node<int, int>* node1 = new Node<int, int>(10, 100);
+    Node<int, int>* node2 = new Node<int, int>(20, 200);
+    Node<int, int>* node3 = new Node<int, int>(30, 300);
+    skiplist.insert(node1);
+    skiplist.insert(node2);
+    skiplist.insert(node3);
+    
+    // Remove tail node (largest key)
+    bool result = skiplist.remove(30);
+    assert(result == true);
+    
+    // Verify node is removed from all levels
+    auto levels = skiplist.get_levels();
+    for (size_t i = 0; i < levels.size(); i++) {
+        assert(levels[i]->get_node(30) == nullptr);
+    }
+    
+    // Verify other nodes are still present
+    assert(levels[0]->get_node(10) != nullptr);
+    assert(levels[0]->get_node(20) != nullptr);
+    
+    // Verify list structure is correct
+    auto node_20 = levels[0]->get_node(20);
+    assert(node_20->get_next() == nullptr);  // 20 should be the new tail
+    
+    // Clean up original nodes
+    delete node1;
+    delete node2;
+    delete node3;
+    
+    std::cout << "remove tail node test passed!" << std::endl;
+}
+
+void test_remove_non_existent_key() {
+    SkipList<int, int> skiplist;
+    
+    // Insert some nodes
+    Node<int, int>* node1 = new Node<int, int>(10, 100);
+    Node<int, int>* node2 = new Node<int, int>(20, 200);
+    skiplist.insert(node1);
+    skiplist.insert(node2);
+    
+    // Try to remove non-existent key
+    bool result = skiplist.remove(15);
+    assert(result == false);
+    
+    // Verify original nodes are still present
+    auto levels = skiplist.get_levels();
+    assert(levels[0]->get_node(10) != nullptr);
+    assert(levels[0]->get_node(20) != nullptr);
+    
+    // Clean up original nodes
+    delete node1;
+    delete node2;
+    
+    std::cout << "remove non-existent key test passed!" << std::endl;
+}
+
+void test_remove_from_empty_list() {
+    SkipList<int, int> skiplist;
+    
+    // Try to remove from empty list
+    bool result = skiplist.remove(10);
+    assert(result == false);
+    
+    // Verify list is still empty
+    auto levels = skiplist.get_levels();
+    assert(levels.size() >= 1);
+    assert(levels[0]->length() == 0);
+    
+    std::cout << "remove from empty list test passed!" << std::endl;
+}
+
+void test_remove_node_with_multiple_levels() {
+    SkipList<int, int> skiplist;
+    
+    // Insert a node that might have multiple levels
+    Node<int, int>* node1 = new Node<int, int>(10, 100);
+    Node<int, int>* node2 = new Node<int, int>(20, 200);
+    Node<int, int>* node3 = new Node<int, int>(30, 300);
+    skiplist.insert(node1);
+    skiplist.insert(node2);
+    skiplist.insert(node3);
+    
+    // Get the node to see how many levels it has
+    auto levels_before = skiplist.get_levels();
+    auto node_to_remove = levels_before[0]->get_node(20);
+    assert(node_to_remove != nullptr);
+    
+    // Count how many levels this node appears on
+    int level_count = 1;
+    Node<int, int>* current = node_to_remove;
+    while (current->get_up() != nullptr) {
+        level_count++;
+        current = current->get_up();
+    }
+    
+    // Remove the node
+    bool result = skiplist.remove(20);
+    assert(result == true);
+    
+    // Verify node is removed from all levels it appeared on
+    auto levels_after = skiplist.get_levels();
+    for (int i = 0; i < level_count; i++) {
+        assert(levels_after[i]->get_node(20) == nullptr);
+    }
+    
+    // Verify other nodes are still present
+    assert(levels_after[0]->get_node(10) != nullptr);
+    assert(levels_after[0]->get_node(30) != nullptr);
+    
+    // Clean up original nodes
+    delete node1;
+    delete node2;
+    delete node3;
+    
+    std::cout << "remove node with multiple levels test passed!" << std::endl;
+}
+
 int main() {
     test_default_constructor();
         
@@ -1056,6 +1261,14 @@ int main() {
     test_insert_new_head();
     test_insert_new_tail();
     test_insert_middle_node();
+    
+    // remove tests
+    test_remove_head_node();
+    test_remove_middle_node();
+    test_remove_tail_node();
+    test_remove_non_existent_key();
+    test_remove_from_empty_list();
+    test_remove_node_with_multiple_levels();
     
     std::cout << "All tests passed successfully!" << std::endl;
     return 0;
