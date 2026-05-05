@@ -75,7 +75,7 @@ public:
         return levels;
     }
 
-    //return node with the largest key <= k or tail of list
+    //return first node with the largest key <= k or tail of list
     Node<K,V>* find(const K& key){
         //start from top level find
         size_t curr_level = levels.size() - 1;
@@ -129,6 +129,7 @@ public:
         return random_levels;
     }
 
+    //remove first node with key
     bool remove(const K& key){
         //find node to remove
         Node<K,V>* node = find(key);
@@ -149,6 +150,20 @@ public:
             curr_level++;
         }
 
+        return true;
+    }
+
+    //update first node with key on lowest level (higher level nodes are not maintained)
+    bool update(const K& key, const V& value){
+        //find node to update
+        Node<K,V>* node = find(key);
+        //if not found find returns tail
+
+        if(node == nullptr || node->get_key() != key){
+            return false;
+        }
+        
+        node->set_val(value);
         return true;
     }
 

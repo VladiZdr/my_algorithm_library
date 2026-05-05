@@ -16,7 +16,7 @@ void test_default_constructor() {
     assert(levels[0]->begin() == nullptr);  
     assert(levels[0]->length() == 0); 
     
-    std::cout << "Default constructor test passed!" << std::endl;
+    //std::cout << "Default constructor test passed!" << std::endl;
 }
 
 // Copy Constructor Tests
@@ -40,7 +40,7 @@ void test_copy_constructor_nullptr() {
     // Should be different objects (deep copy)
     assert(original_levels[0] != copied_levels[0]);
     
-    std::cout << "Copy constructor nullptr test passed!" << std::endl;
+    //std::cout << "Copy constructor nullptr test passed!" << std::endl;
 }
 
 void test_copy_constructor_empty_list() {
@@ -72,7 +72,7 @@ void test_copy_constructor_empty_list() {
     }
     
     delete temp_node;
-    std::cout << "Copy constructor empty list test passed!" << std::endl;
+    //std::cout << "Copy constructor empty list test passed!" << std::endl;
 }
 
 void test_copy_constructor_one_node() {
@@ -113,7 +113,7 @@ void test_copy_constructor_one_node() {
     }
     delete test_node;
     
-    std::cout << "Copy constructor one node test passed!" << std::endl;
+    //std::cout << "Copy constructor one node test passed!" << std::endl;
 }
 
 void test_copy_constructor_three_nodes_deep() {
@@ -186,7 +186,7 @@ void test_copy_constructor_three_nodes_deep() {
     delete node2;
     delete node3;
     delete new_node;
-    std::cout << "Copy constructor three nodes deep test passed!" << std::endl;
+    //std::cout << "Copy constructor three nodes deep test passed!" << std::endl;
 }
 
 // Move Constructor Tests
@@ -207,7 +207,7 @@ void test_move_constructor_nullptr() {
     auto original_levels = original.get_levels();
     assert(original_levels.size() == 0);
     
-    std::cout << "Move constructor nullptr test passed!" << std::endl;
+    //std::cout << "Move constructor nullptr test passed!" << std::endl;
 }
 
 void test_move_constructor_empty_list() {
@@ -235,7 +235,7 @@ void test_move_constructor_empty_list() {
     assert(original_levels.size() == 0);
     
     delete temp_node;
-    std::cout << "Move constructor empty list test passed!" << std::endl;
+    //std::cout << "Move constructor empty list test passed!" << std::endl;
 }
 
 void test_move_constructor_one_node() {
@@ -271,7 +271,7 @@ void test_move_constructor_one_node() {
     assert(original_levels.size() == 0);
     
     delete test_node;
-    std::cout << "Move constructor one node test passed!" << std::endl;
+    //std::cout << "Move constructor one node test passed!" << std::endl;
 }
 
 void test_move_constructor_three_nodes() {
@@ -317,7 +317,7 @@ void test_move_constructor_three_nodes() {
     delete node1;
     delete node2;
     delete node3;
-    std::cout << "Move constructor three nodes test passed!" << std::endl;
+    //std::cout << "Move constructor three nodes test passed!" << std::endl;
 }
 
 // Assignment Operator Tests
@@ -344,7 +344,7 @@ void test_copy_assignment_both_empty() {
     assert(this_levels != other_levels);
     assert(this_levels[0] != other_levels[0]);
         
-    std::cout << "Copy assignment both empty test passed!" << std::endl;
+    //std::cout << "Copy assignment both empty test passed!" << std::endl;
 }
 
 void test_copy_assignment_other_empty_this_three() {
@@ -381,7 +381,7 @@ void test_copy_assignment_other_empty_this_three() {
     delete node4;
     delete node5;
         
-    std::cout << "Copy assignment other empty this three test passed!" << std::endl;
+    //std::cout << "Copy assignment other empty this three test passed!" << std::endl;
 }
 
 void test_copy_assignment_this_two_other_one() {
@@ -451,7 +451,7 @@ void test_copy_assignment_this_two_other_one() {
     delete node2;
     delete node3;
         
-    std::cout << "Copy assignment this two other one test passed!" << std::endl;
+    //std::cout << "Copy assignment this two other one test passed!" << std::endl;
 }
 
 void test_copy_assignment_this_two_other_three() {
@@ -547,7 +547,7 @@ void test_copy_assignment_this_two_other_three() {
     delete node4;
     delete node5;
         
-    std::cout << "Copy assignment this two other three test passed!" << std::endl;
+    //std::cout << "Copy assignment this two other three test passed!" << std::endl;
 }
 
 void test_move_assignment_both_empty(){
@@ -571,7 +571,7 @@ void test_move_assignment_both_empty(){
     assert(other_levels.size() == 0);
 
         
-    std::cout << "Move assignment both empty test passed!" << std::endl;
+    //std::cout << "Move assignment both empty test passed!" << std::endl;
 }
 
 void test_move_assignment_other_empty_this_three() {
@@ -607,7 +607,7 @@ void test_move_assignment_other_empty_this_three() {
     delete node2;
     delete node3;
         
-    std::cout << "Move assignment other empty this three test passed!" << std::endl;
+    //std::cout << "Move assignment other empty this three test passed!" << std::endl;
 }
 
 void test_move_assignment_this_two_other_one() {
@@ -663,7 +663,7 @@ void test_move_assignment_this_two_other_one() {
     delete node2;
     delete node3;
         
-    std::cout << "Move assignment this two other one test passed!" << std::endl;
+    //std::cout << "Move assignment this two other one test passed!" << std::endl;
 }
 
 void test_move_assignment_this_two_other_three() {
@@ -727,7 +727,7 @@ void test_move_assignment_this_two_other_three() {
     delete node4;
     delete node5;
         
-    std::cout << "Move assignment this two other three test passed!" << std::endl;
+    //std::cout << "Move assignment this two other three test passed!" << std::endl;
 }
 
 // find Tests
@@ -763,7 +763,7 @@ void test_find_key_not_in_list() {
     delete node2;
     delete node3;
     
-    std::cout << "find key not in list test passed!" << std::endl;
+    //std::cout << "find key not in list test passed!" << std::endl;
 }
 
 void test_find_key_in_list() {
@@ -802,7 +802,7 @@ void test_find_key_in_list() {
     delete node2;
     delete node3;
     
-    std::cout << "find key in list test passed!" << std::endl;
+    //std::cout << "find key in list test passed!" << std::endl;
 }
 
 void test_find_key_smaller_than_head() {
@@ -835,7 +835,7 @@ void test_find_key_smaller_than_head() {
     delete node2;
     delete node3;
     
-    std::cout << "find key smaller than head test passed!" << std::endl;
+    //std::cout << "find key smaller than head test passed!" << std::endl;
 }
 
 void test_find_key_bigger_than_tail() {
@@ -868,7 +868,7 @@ void test_find_key_bigger_than_tail() {
     delete node2;
     delete node3;
     
-    std::cout << "find key bigger than tail test passed!" << std::endl;
+    //std::cout << "find key bigger than tail test passed!" << std::endl;
 }
 
 // insert Tests
@@ -910,7 +910,7 @@ void test_insert_new_head() {
     delete node1;
     delete node2;
     
-    std::cout << "insert new head test passed!" << std::endl;
+    //std::cout << "insert new head test passed!" << std::endl;
 }
 
 void test_insert_new_tail() {
@@ -962,7 +962,7 @@ void test_insert_new_tail() {
     delete node2;
     delete original_node;
     
-    std::cout << "insert new tail test passed!" << std::endl;
+    //std::cout << "insert new tail test passed!" << std::endl;
 }
 
 void test_insert_middle_node() {
@@ -1016,7 +1016,7 @@ void test_insert_middle_node() {
     delete node2;
     delete original_node;
     
-    std::cout << "insert middle node test passed!" << std::endl;
+    //std::cout << "insert middle node test passed!" << std::endl;
 }
 
 // remove Tests
@@ -1055,7 +1055,7 @@ void test_remove_head_node() {
     delete node2;
     delete node3;
     
-    std::cout << "remove head node test passed!" << std::endl;
+    //std::cout << "remove head node test passed!" << std::endl;
 }
 
 void test_remove_middle_node() {
@@ -1098,7 +1098,7 @@ void test_remove_middle_node() {
     delete node3;
     delete node4;
     
-    std::cout << "remove middle node test passed!" << std::endl;
+    //std::cout << "remove middle node test passed!" << std::endl;
 }
 
 void test_remove_tail_node() {
@@ -1135,7 +1135,7 @@ void test_remove_tail_node() {
     delete node2;
     delete node3;
     
-    std::cout << "remove tail node test passed!" << std::endl;
+    //std::cout << "remove tail node test passed!" << std::endl;
 }
 
 void test_remove_non_existent_key() {
@@ -1160,7 +1160,7 @@ void test_remove_non_existent_key() {
     delete node1;
     delete node2;
     
-    std::cout << "remove non-existent key test passed!" << std::endl;
+    //std::cout << "remove non-existent key test passed!" << std::endl;
 }
 
 void test_remove_from_empty_list() {
@@ -1175,7 +1175,7 @@ void test_remove_from_empty_list() {
     assert(levels.size() >= 1);
     assert(levels[0]->length() == 0);
     
-    std::cout << "remove from empty list test passed!" << std::endl;
+    ////std::cout << "remove from empty list test passed!" << std::endl;
 }
 
 void test_remove_node_with_multiple_levels() {
@@ -1221,54 +1221,285 @@ void test_remove_node_with_multiple_levels() {
     delete node2;
     delete node3;
     
-    std::cout << "remove node with multiple levels test passed!" << std::endl;
+    ////std::cout << "remove node with multiple levels test passed!" << std::endl;
+}
+
+// update Tests
+void test_update_existing_node() {
+    SkipList<int, int> skiplist;
+    
+    // Insert multiple nodes
+    Node<int, int>* node1 = new Node<int, int>(10, 100);
+    Node<int, int>* node2 = new Node<int, int>(20, 200);
+    Node<int, int>* node3 = new Node<int, int>(30, 300);
+    skiplist.insert(node1);
+    skiplist.insert(node2);
+    skiplist.insert(node3);
+    
+    // Update existing node
+    bool result = skiplist.update(20, 999);
+    assert(result == true);
+    
+    // Verify the value was updated
+    auto levels = skiplist.get_levels();
+    auto updated_node = levels[0]->get_node(20);
+    assert(updated_node != nullptr);
+    assert(updated_node->get_key() == 20);
+    assert(updated_node->get_val() == 999);  // Should be updated value
+    
+    // Verify other nodes are unchanged
+    assert(levels[0]->get_node(10)->get_val() == 100);
+    assert(levels[0]->get_node(30)->get_val() == 300);
+    
+    // Clean up original nodes
+    delete node1;
+    delete node2;
+    delete node3;
+    
+    //std::cout << "update existing node test passed!" << std::endl;
+}
+
+void test_update_non_existent_key() {
+    SkipList<int, int> skiplist;
+    
+    // Insert some nodes
+    Node<int, int>* node1 = new Node<int, int>(10, 100);
+    Node<int, int>* node2 = new Node<int, int>(20, 200);
+    skiplist.insert(node1);
+    skiplist.insert(node2);
+    
+    // Try to update non-existent key
+    bool result = skiplist.update(15, 999);
+    assert(result == false);
+    
+    // Verify original nodes are unchanged
+    auto levels = skiplist.get_levels();
+    assert(levels[0]->get_node(10)->get_val() == 100);
+    assert(levels[0]->get_node(20)->get_val() == 200);
+    
+    // Clean up original nodes
+    delete node1;
+    delete node2;
+    
+    std::cout << "update non-existent key test passed!" << std::endl;
+}
+
+void test_update_multiple_times() {
+    SkipList<int, int> skiplist;
+    
+    // Insert a node
+    Node<int, int>* node1 = new Node<int, int>(10, 100);
+    skiplist.insert(node1);
+    
+    // Update the same node multiple times
+    bool result1 = skiplist.update(10, 200);
+    assert(result1 == true);
+    
+    bool result2 = skiplist.update(10, 300);
+    assert(result2 == true);
+    
+    bool result3 = skiplist.update(10, 400);
+    assert(result3 == true);
+    
+    // Verify the final value is correct
+    auto levels = skiplist.get_levels();
+    auto updated_node = levels[0]->get_node(10);
+    assert(updated_node != nullptr);
+    assert(updated_node->get_key() == 10);
+    assert(updated_node->get_val() == 400);  // Should be the last updated value
+    
+    /* Verify the update propagated to all levels
+    for (size_t i = 0; i < levels.size(); i++) {
+        auto level_node = levels[i]->get_node(10);
+        if (level_node != nullptr) {
+            assert(level_node->get_val() == 400);
+        }
+    }*/
+    
+    // Clean up original node
+    delete node1;
+    
+    //std::cout << "update multiple times test passed!" << std::endl;
+}
+
+void test_update_head_node() {
+    SkipList<int, int> skiplist;
+    
+    // Insert multiple nodes
+    Node<int, int>* node1 = new Node<int, int>(10, 100);
+    Node<int, int>* node2 = new Node<int, int>(20, 200);
+    Node<int, int>* node3 = new Node<int, int>(30, 300);
+    skiplist.insert(node1);
+    skiplist.insert(node2);
+    skiplist.insert(node3);
+    
+    // Update head node
+    bool result = skiplist.update(10, 999);
+    assert(result == true);
+    
+    // Verify the head node was updated
+    auto levels = skiplist.get_levels();
+    auto updated_node = levels[0]->get_node(10);
+    assert(updated_node != nullptr);
+    assert(updated_node->get_key() == 10);
+    assert(updated_node->get_val() == 999);
+    
+    // Verify it's still the head
+    auto head_node = levels[0]->begin();
+    assert(head_node == updated_node);
+    
+    // Verify other nodes are unchanged
+    assert(levels[0]->get_node(20)->get_val() == 200);
+    assert(levels[0]->get_node(30)->get_val() == 300);
+    
+    // Clean up original nodes
+    delete node1;
+    delete node2;
+    delete node3;
+    
+    //std::cout << "update head node test passed!" << std::endl;
+}
+
+void test_update_middle_node() {
+    SkipList<int, int> skiplist;
+    
+    // Insert multiple nodes
+    Node<int, int>* node1 = new Node<int, int>(10, 100);
+    Node<int, int>* node2 = new Node<int, int>(20, 200);
+    Node<int, int>* node3 = new Node<int, int>(30, 300);
+    skiplist.insert(node1);
+    skiplist.insert(node2);
+    skiplist.insert(node3);
+    
+    // Update middle node
+    bool result = skiplist.update(20, 999);
+    assert(result == true);
+    
+    // Verify the middle node was updated
+    auto levels = skiplist.get_levels();
+    auto updated_node = levels[0]->get_node(20);
+    assert(updated_node != nullptr);
+    assert(updated_node->get_key() == 20);
+    assert(updated_node->get_val() == 999);
+    
+    // Verify list structure is maintained
+    auto node_10 = levels[0]->get_node(10);
+    auto node_30 = levels[0]->get_node(30);
+    assert(node_10->get_next() == updated_node);
+    assert(updated_node->get_next() == node_30);
+    assert(node_30->get_prev() == updated_node);
+    assert(updated_node->get_prev() == node_10);
+    
+    // Verify other nodes are unchanged
+    assert(node_10->get_val() == 100);
+    assert(node_30->get_val() == 300);
+    
+    // Clean up original nodes
+    delete node1;
+    delete node2;
+    delete node3;
+    
+    //std::cout << "update middle node test passed!" << std::endl;
+}
+
+void test_update_tail_node() {
+    SkipList<int, int> skiplist;
+    
+    // Insert multiple nodes
+    Node<int, int>* node1 = new Node<int, int>(10, 100);
+    Node<int, int>* node2 = new Node<int, int>(20, 200);
+    Node<int, int>* node3 = new Node<int, int>(30, 300);
+    skiplist.insert(node1);
+    skiplist.insert(node2);
+    skiplist.insert(node3);
+    
+    // Update tail node
+    bool result = skiplist.update(30, 999);
+    assert(result == true);
+    
+    // Verify the tail node was updated
+    auto levels = skiplist.get_levels();
+    auto updated_node = levels[0]->get_node(30);
+    assert(updated_node != nullptr);
+    assert(updated_node->get_key() == 30);
+    assert(updated_node->get_val() == 999);
+    
+    // Verify it's still the tail
+    auto tail_node = updated_node;
+    while (tail_node->get_next() != nullptr) {
+        tail_node = tail_node->get_next();
+    }
+    assert(tail_node == updated_node);
+    
+    // Verify other nodes are unchanged
+    assert(levels[0]->get_node(10)->get_val() == 100);
+    assert(levels[0]->get_node(20)->get_val() == 200);
+    
+    // Clean up original nodes
+    delete node1;
+    delete node2;
+    delete node3;
+    
+    //std::cout << "update tail node test passed!" << std::endl;
 }
 
 int main() {
-    test_default_constructor();
+    for(int i = 1 ; i <= 10000 ; i++){
+        test_default_constructor();
         
-    // Copy constructor tests
-    test_copy_constructor_nullptr();
-    test_copy_constructor_empty_list();
-    test_copy_constructor_one_node();
-    test_copy_constructor_three_nodes_deep();
+        // Copy constructor tests
+        test_copy_constructor_nullptr();
+        test_copy_constructor_empty_list();
+        test_copy_constructor_one_node();
+        test_copy_constructor_three_nodes_deep();
+        
+        // Move constructor tests
+        test_move_constructor_nullptr();
+        test_move_constructor_empty_list();
+        test_move_constructor_one_node();
+        test_move_constructor_three_nodes();
+        
+        // Copy assignment operator tests
+        test_copy_assignment_both_empty();
+        test_copy_assignment_other_empty_this_three();
+        test_copy_assignment_this_two_other_one();
+        test_copy_assignment_this_two_other_three();
+        
+        // Move assignment operator tests
+        test_move_assignment_both_empty();
+        test_move_assignment_other_empty_this_three();
+        test_move_assignment_this_two_other_one();
+        test_move_assignment_this_two_other_three();
+        
+        // find tests
+        test_find_key_not_in_list();
+        test_find_key_in_list();
+        test_find_key_smaller_than_head();
+        test_find_key_bigger_than_tail();
+        
+        // insert tests
+        test_insert_new_head();
+        test_insert_new_tail();
+        test_insert_middle_node();
+        
+        // remove tests
+        test_remove_head_node();
+        test_remove_middle_node();
+        test_remove_tail_node();
+        test_remove_non_existent_key();
+        test_remove_from_empty_list();
+        test_remove_node_with_multiple_levels();
+
+        // update tests
+        test_update_multiple_times();
+        test_update_head_node();
+        test_update_middle_node();
+        test_update_tail_node();
+        
+        std::cout << "Passed iteration: "<< i << std::endl;
+
+    }
     
-    // Move constructor tests
-    test_move_constructor_nullptr();
-    test_move_constructor_empty_list();
-    test_move_constructor_one_node();
-    test_move_constructor_three_nodes();
-    
-    // Copy assignment operator tests
-    test_copy_assignment_both_empty();
-    test_copy_assignment_other_empty_this_three();
-    test_copy_assignment_this_two_other_one();
-    test_copy_assignment_this_two_other_three();
-    
-    // Move assignment operator tests
-    test_move_assignment_both_empty();
-    test_move_assignment_other_empty_this_three();
-    test_move_assignment_this_two_other_one();
-    test_move_assignment_this_two_other_three();
-    
-    // find tests
-    test_find_key_not_in_list();
-    test_find_key_in_list();
-    test_find_key_smaller_than_head();
-    test_find_key_bigger_than_tail();
-    
-    // insert tests
-    test_insert_new_head();
-    test_insert_new_tail();
-    test_insert_middle_node();
-    
-    // remove tests
-    test_remove_head_node();
-    test_remove_middle_node();
-    test_remove_tail_node();
-    test_remove_non_existent_key();
-    test_remove_from_empty_list();
-    test_remove_node_with_multiple_levels();
     
     std::cout << "All tests passed successfully!" << std::endl;
     return 0;
