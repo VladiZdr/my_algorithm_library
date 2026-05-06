@@ -142,10 +142,10 @@ public:
         size_t curr_level = 0;
         //remove from each level
         while(curr != nullptr){
-            const K key = curr->get_key();
-            levels[curr_level]->remove(key); 
+            Node<K,V>* next = curr->get_up();
+            levels[curr_level]->remove(curr); 
 
-            curr = curr->get_up();
+            curr = next;
             curr_level++;
         }
 
