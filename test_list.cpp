@@ -1330,8 +1330,166 @@ int main() {
         delete b7;
         delete b8;
     }
-
     std::cout << "Merge tests passed!\n";
+
+    // remove(Node<K,V>*) Tests
+    // Test removing head node
+    {
+        MyList<int, int> list;
+        Node<int, int>* n1 = new Node<int, int>(10, 100);
+        Node<int, int>* n2 = new Node<int, int>(20, 200);
+        Node<int, int>* n3 = new Node<int, int>(30, 300);
+        list.insert(n1);
+        list.insert(n2);
+        list.insert(n3);
+        
+        // Get the actual node in the list to remove
+        Node<int, int>* head_to_remove = list.get_node(10);
+        
+        // Remove head node
+        bool result = list.remove(head_to_remove);
+        assert(result == true);
+        
+        // Verify head is removed
+        assert(list.begin()->get_key() == 20);
+        assert(list.begin()->get_val() == 200);
+        assert(list.begin()->get_prev() == nullptr);
+        
+        // Verify list structure
+        assert(list.length() == 2);
+        Node<int, int>* current = list.begin();
+        assert(current->get_next() != nullptr);
+        assert(current->get_next()->get_key() == 30);
+        assert(current->get_next()->get_prev() == current);
+        
+        delete n1;
+        delete n2;
+        delete n3;
+    }
+    
+    // Test removing middle node
+    {
+        MyList<int, int> list;
+        Node<int, int>* n1 = new Node<int, int>(10, 100);
+        Node<int, int>* n2 = new Node<int, int>(20, 200);
+        Node<int, int>* n3 = new Node<int, int>(30, 300);
+        list.insert(n1);
+        list.insert(n2);
+        list.insert(n3);
+        
+        // Get the actual node in the list to remove
+        Node<int, int>* middle_to_remove = list.get_node(20);
+        
+        // Remove middle node
+        bool result = list.remove(middle_to_remove);
+        assert(result == true);
+        
+        // Verify middle node is removed
+        assert(list.begin()->get_key() == 10);
+        assert(list.begin()->get_next()->get_key() == 30);
+        assert(list.begin()->get_next()->get_prev()->get_key() == 10);
+        
+        // Verify list structure
+        assert(list.length() == 2);
+        Node<int, int>* current = list.begin();
+        assert(current->get_next() != nullptr);
+        assert(current->get_next()->get_next() == nullptr);
+        
+        delete n1;
+        delete n2;
+        delete n3;
+    }
+    
+    // Test removing tail node
+    {
+        MyList<int, int> list;
+        Node<int, int>* n1 = new Node<int, int>(10, 100);
+        Node<int, int>* n2 = new Node<int, int>(20, 200);
+        Node<int, int>* n3 = new Node<int, int>(30, 300);
+        list.insert(n1);
+        list.insert(n2);
+        list.insert(n3);
+        
+        // Get the actual node in the list to remove
+        Node<int, int>* tail_to_remove = list.get_node(30);
+        
+        // Remove tail node
+        bool result = list.remove(tail_to_remove);
+        assert(result == true);
+        
+        // Verify tail is removed
+        assert(list.begin()->get_key() == 10);
+        assert(list.begin()->get_next()->get_key() == 20);
+        assert(list.begin()->get_next()->get_next() == nullptr);
+        assert(list.begin()->get_next()->get_prev()->get_key() == 10);
+        
+        // Verify list structure
+        assert(list.length() == 2);
+        
+        delete n1;
+        delete n2;
+        delete n3;
+    }
+    
+    // Test removing nullptr
+    {
+        MyList<int, int> list;
+        
+        // Try to remove nullptr
+        bool result = list.remove(nullptr);
+        assert(result == false);
+        
+        // Verify list is unchanged
+        assert(list.begin() == nullptr);
+        assert(list.length() == 0);
+    }
+    
+    // Test removing single node
+    {
+        MyList<int, int> list;
+        Node<int, int>* n1 = new Node<int, int>(10, 100);
+        list.insert(n1);
+        
+        // Get the actual node in the list to remove
+        Node<int, int>* only_node = list.get_node(10);
+        
+        // Remove the only node
+        bool result = list.remove(only_node);
+        assert(result == true);
+        
+        // Verify list is empty
+        assert(list.begin() == nullptr);
+        assert(list.length() == 0);
+        
+        delete n1;
+    }
+    
+    // Test removing non-existent node
+    {
+        MyList<int, int> list;
+        Node<int, int>* n1 = new Node<int, int>(10, 100);
+        Node<int, int>* n2 = new Node<int, int>(20, 200);
+        list.insert(n1);
+        list.insert(n2);
+        
+        
+        // Get the node not in the list to remove
+        Node<int, int>* only_node = list.get_node(30);
+
+        // Try to remove non-existent node
+        bool result = list.remove(only_node);
+        assert(result == false);
+        
+        // Verify list is unchanged
+        assert(list.begin()->get_key() == 10);
+        assert(list.begin()->get_next()->get_key() == 20);
+        assert(list.length() == 2);
+        
+        delete n1;
+        delete n2;
+    }
+
+    std::cout << "MyList remove(Node<K,V>*) tests passed!\n";
 
     return 0;
 }

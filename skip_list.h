@@ -134,7 +134,6 @@ public:
         //find node to remove
         Node<K,V>* node = find(key);
         //if not found find returns tail
-
         if(node == nullptr || node->get_key() != key){
             return false;
         }
@@ -165,6 +164,14 @@ public:
         
         node->set_val(value);
         return true;
+    }
+
+    //get first node
+    Node<K,V>* begin(){
+        if(levels.empty()){
+            return nullptr;
+        }
+        return levels[0]->begin();
     }
 
     //cleanup

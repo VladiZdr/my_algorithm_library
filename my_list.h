@@ -153,6 +153,7 @@ public:
         return el;
     }
 
+    //remove node by key
     bool remove(const K& k){
         Node<K, V>* tmp = get_node(k);
         if (tmp == nullptr) {
@@ -163,6 +164,34 @@ public:
             tmp->get_prev()->set_next(tmp->get_next());
         } else {
             start = tmp->get_next();
+        }
+
+        if (tmp->get_next() != nullptr) {
+            tmp->get_next()->set_prev(tmp->get_prev());
+        }
+
+        delete tmp;
+        size--;
+        return true;
+    }
+
+    //remove node by pointer (suitable only for already found nodes in list)
+    bool remove(Node<K, V>* tmp){
+        if (tmp == nullptr) {
+            return false;
+        }
+        if(tmp == start){
+            start = start->get_next();
+            if(start != nullptr){
+                start->set_prev(nullptr);
+            }
+            delete tmp;
+            size--;
+            return true;
+        }
+
+        if (tmp->get_prev() != nullptr) {
+            tmp->get_prev()->set_next(tmp->get_next());
         }
 
         if (tmp->get_next() != nullptr) {
