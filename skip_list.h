@@ -48,6 +48,7 @@ public:
         //other->set_levels(std::vector<MyList<K,V>*>());
     }
 
+    //assignments
     SkipList& operator= (SkipList& other){
         
         if(this != &other){
@@ -100,6 +101,7 @@ public:
         return curr_find;
     }
 
+    //insert on random amount of levels in ascending order
     size_t insert(Node<K,V>* node){
         //determine how many levels insert 
         size_t random_levels = get_random_levels() + 1;
@@ -152,7 +154,7 @@ public:
         return true;
     }
 
-    //update first node with key on lowest level (higher level nodes are not maintained)
+    //update first node valuewith key on lowest level (higher level nodes are not maintained)
     bool update(const K& key, const V& value){
         //find node to update
         Node<K,V>* node = find(key);
@@ -166,14 +168,35 @@ public:
         return true;
     }
 
-    //get first node
+    //get first/min node
     Node<K,V>* begin(){
         if(levels.empty()){
             return nullptr;
         }
         return levels[0]->begin();
     }
+    Node<K,V>* min(){
+        if(levels.empty()){
+            return nullptr;
+        }
+        return levels[0]->begin();
+    }
 
+
+    //get last/max node
+    Node<K,V>* end(){
+        if(levels.empty()){
+            return nullptr;
+        }
+        return levels[0]->end();
+    }
+    Node<K,V>* max(){
+        if(levels.empty()){
+            return nullptr;
+        }
+        return levels[0]->end();
+    }
+    
     //cleanup
     void erase(){
         for(int i = 0 ; i < levels.size() ; i++){

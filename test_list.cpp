@@ -10,6 +10,7 @@ int main() {
         MyList<int, int> l;
 
         assert(l.begin() == nullptr);
+        assert(l.tail() == nullptr);
         assert(l.length() == 0);
     }
 
@@ -19,12 +20,14 @@ int main() {
         MyList<int, int> l(start_n);
 
         assert(l.begin() != nullptr);
+        assert(l.tail() != nullptr);
         assert(l.length() == 1);
 
         assert(l.begin()->get_key() == 10);
         assert(l.begin()->get_val() == 20);
         assert(l.begin()->get_prev() == nullptr);
         assert(l.begin()->get_next() == nullptr);
+        assert(l.tail() == l.begin());
 
         delete start_n;
     }
@@ -35,6 +38,7 @@ int main() {
         MyList<int, int> l(start_n);
 
         assert(l.begin() == nullptr);
+        assert(l.tail() == nullptr);
         assert(l.length() == 0);
     }
 
@@ -44,6 +48,7 @@ int main() {
         MyList<int, int> copy(other);
 
         assert(copy.begin() == nullptr);
+        assert(copy.tail() == nullptr);
         assert(copy.length() == 0);
     }
 
@@ -57,12 +62,15 @@ int main() {
         MyList<int, int> copy(other);
 
         assert(copy.begin() != nullptr);
+        assert(copy.tail() != nullptr);
         assert(copy.length() == 1);
         assert(copy.begin()->get_key() == 10);
         assert(copy.begin()->get_val() == 100);
         assert(copy.begin()->get_prev() == nullptr);
         assert(copy.begin()->get_next() == nullptr);
         assert(copy.begin() != other.begin());
+        assert(copy.tail() == copy.begin());
+        assert(copy.tail() != other.tail());
 
         delete n1;
     }
@@ -100,6 +108,9 @@ int main() {
         assert(c3->get_prev() == c2);
         assert(c3->get_next() == nullptr);
 
+        assert(copy.tail() == c3);
+        assert(copy.tail() != other.tail());
+
         delete n1;
         delete n2;
         delete n3;
@@ -111,8 +122,10 @@ int main() {
         MyList<int, int> moved(std::move(other));
 
         assert(moved.begin() == nullptr);
+        assert(moved.tail() == nullptr);
         assert(moved.length() == 0);
         assert(other.begin() == nullptr);
+        assert(other.tail() == nullptr);
         assert(other.length() == 0);
     }
 
@@ -124,16 +137,19 @@ int main() {
         other.insert(n1);
 
         Node<int, int>* old_begin = other.begin();
+        Node<int, int>* old_end = other.tail();
 
         MyList<int, int> moved(std::move(other));
 
         assert(moved.begin() == old_begin);
+        assert(moved.tail() == old_end);
         assert(moved.length() == 1);
         assert(moved.begin()->get_key() == 10);
         assert(moved.begin()->get_val() == 100);
         assert(moved.begin()->get_prev() == nullptr);
         assert(moved.begin()->get_next() == nullptr);
         assert(other.begin() == nullptr);
+        assert(other.tail() == nullptr);
         assert(other.length() == 0);
 
         delete n1;
@@ -153,10 +169,12 @@ int main() {
         Node<int, int>* old_begin = other.begin();
         Node<int, int>* old_second = old_begin->get_next();
         Node<int, int>* old_third = old_second->get_next();
+        Node<int, int>* old_end = other.tail();
 
         MyList<int, int> moved(std::move(other));
 
         assert(moved.begin() == old_begin);
+        assert(moved.tail() == old_end);
         assert(moved.length() == 3);
 
         Node<int, int>* m1 = moved.begin();
@@ -175,6 +193,7 @@ int main() {
         assert(m3->get_next() == nullptr);
 
         assert(other.begin() == nullptr);
+        assert(other.tail() == nullptr);
         assert(other.length() == 0);
 
         delete n1;
@@ -192,8 +211,10 @@ int main() {
         a = b;
 
         assert(a.begin() == nullptr);
+        assert(a.tail() == nullptr);
         assert(a.length() == 0);
         assert(b.begin() == nullptr);
+        assert(b.tail() == nullptr);
         assert(b.length() == 0);
     }
 
@@ -213,12 +234,15 @@ int main() {
         Node<int, int>* b1 = b.begin();
         Node<int, int>* b2 = b1->get_next();
         Node<int, int>* b3 = b2->get_next();
+        Node<int, int>* b_end = b.tail();
 
         a = b;
 
         assert(a.length() == 3);
         assert(a.begin() != nullptr);
+        assert(a.tail() != nullptr);
         assert(a.begin() != b.begin());
+        assert(a.tail() != b.tail());
 
         Node<int, int>* a1 = a.begin();
         Node<int, int>* a2 = a1->get_next();
@@ -227,9 +251,11 @@ int main() {
         assert(a1->get_key() == 10 && a1->get_val() == 100);
         assert(a2->get_key() == 20 && a2->get_val() == 200);
         assert(a3->get_key() == 30 && a3->get_val() == 300);
+        assert(a.tail() == a3);
 
         assert(b.length() == 3);
         assert(b.begin() == b1);
+        assert(b.tail() == b_end);
         assert(b1->get_key() == 10 && b1->get_val() == 100);
         assert(b2->get_key() == 20 && b2->get_val() == 200);
         assert(b3->get_key() == 30 && b3->get_val() == 300);
@@ -255,8 +281,10 @@ int main() {
         a = b;
 
         assert(a.begin() == nullptr);
+        assert(a.tail() == nullptr);
         assert(a.length() == 0);
         assert(b.begin() == nullptr);
+        assert(b.tail() == nullptr);
         assert(b.length() == 0);
 
         delete n1;
@@ -282,12 +310,16 @@ int main() {
 
         assert(a.length() == 1);
         assert(a.begin() != nullptr);
+        assert(a.tail() != nullptr);
         assert(a.begin() != b.begin());
+        assert(a.tail() != b.tail());
         assert(a.begin()->get_key() == 15);
         assert(a.begin()->get_val() == 150);
+        assert(a.tail() == a.begin());
 
         assert(b.length() == 1);
         assert(b.begin() == b1);
+        assert(b.tail() == b1);
         assert(b1->get_key() == 15);
         assert(b1->get_val() == 150);
 
@@ -317,6 +349,7 @@ int main() {
         Node<int, int>* b1 = b.begin();
         Node<int, int>* b2 = b1->get_next();
         Node<int, int>* b3 = b2->get_next();
+        Node<int, int>* b_end = b.tail();
 
         a = b;
 
@@ -328,9 +361,12 @@ int main() {
         assert(x1->get_key() == 10 && x1->get_val() == 100);
         assert(x2->get_key() == 20 && x2->get_val() == 200);
         assert(x3->get_key() == 30 && x3->get_val() == 300);
+        assert(a.tail() == x3);
+        assert(a.tail() != b.tail());
 
         assert(b.length() == 3);
         assert(b.begin() == b1);
+        assert(b.tail() == b_end);
         assert(b1->get_key() == 10 && b1->get_val() == 100);
         assert(b2->get_key() == 20 && b2->get_val() == 200);
         assert(b3->get_key() == 30 && b3->get_val() == 300);
@@ -350,8 +386,10 @@ int main() {
         a = std::move(b);
 
         assert(a.begin() == nullptr);
+        assert(a.tail() == nullptr);
         assert(a.length() == 0);
         assert(b.begin() == nullptr);
+        assert(b.tail() == nullptr);
         assert(b.length() == 0);
     }
 
@@ -370,14 +408,17 @@ int main() {
         Node<int, int>* old_begin = b.begin();
         Node<int, int>* old_second = old_begin->get_next();
         Node<int, int>* old_third = old_second->get_next();
+        Node<int, int>* old_end = b.tail();
 
         a = std::move(b);
 
         assert(a.length() == 3);
         assert(a.begin() == old_begin);
+        assert(a.tail() == old_end);
         assert(a.begin()->get_next() == old_second);
         assert(old_second->get_next() == old_third);
         assert(b.begin() == nullptr);
+        assert(b.tail() == nullptr);
         assert(b.length() == 0);
 
         delete n1;
@@ -401,8 +442,10 @@ int main() {
         a = std::move(b);
 
         assert(a.begin() == nullptr);
+        assert(a.tail() == nullptr);
         assert(a.length() == 0);
         assert(b.begin() == nullptr);
+        assert(b.tail() == nullptr);
         assert(b.length() == 0);
 
         delete n1;
@@ -423,14 +466,18 @@ int main() {
         MyList<int, int> b;
         b.insert(bn);
         Node<int, int>* old_begin = b.begin();
+        Node<int, int>* old_end = b.tail();
 
         a = std::move(b);
 
         assert(a.length() == 1);
         assert(a.begin() == old_begin);
+        assert(a.tail() == old_end);
         assert(a.begin()->get_key() == 15);
         assert(a.begin()->get_val() == 150);
+        assert(a.tail() == a.begin());
         assert(b.begin() == nullptr);
+        assert(b.tail() == nullptr);
         assert(b.length() == 0);
 
         delete a1n;
@@ -459,11 +506,13 @@ int main() {
         Node<int, int>* old_begin = b.begin();
         Node<int, int>* old_second = old_begin->get_next();
         Node<int, int>* old_third = old_second->get_next();
+        Node<int, int>* old_end = b.tail();
 
         a = std::move(b);
 
         assert(a.length() == 3);
         assert(a.begin() == old_begin);
+        assert(a.tail() == old_end);
 
         Node<int, int>* x1 = a.begin();
         Node<int, int>* x2 = x1->get_next();
@@ -472,7 +521,9 @@ int main() {
         assert(x1 == old_begin);
         assert(x2 == old_second);
         assert(x3 == old_third);
+        assert(a.tail() == x3);
         assert(b.begin() == nullptr);
+        assert(b.tail() == nullptr);
         assert(b.length() == 0);
 
         delete a1n;
@@ -495,11 +546,13 @@ int main() {
 
         Node<int, int>* old_head = l.begin();
         Node<int, int>* old_second = old_head->get_next();
+        Node<int, int>* old_end = l.tail();
 
         l.insert(nullptr);
 
         assert(l.length() == 2);
         assert(l.begin() == old_head);
+        assert(l.tail() == old_end);
         assert(l.begin()->get_next() == old_second);
         assert(old_head->get_key() == 10);
         assert(old_second->get_key() == 20);
@@ -517,11 +570,13 @@ int main() {
 
         assert(l.length() == 1);
         assert(l.begin() != nullptr);
+        assert(l.tail() != nullptr);
         assert(l.begin() != new_node);
         assert(l.begin()->get_key() == 10);
         assert(l.begin()->get_val() == 100);
         assert(l.begin()->get_prev() == nullptr);
         assert(l.begin()->get_next() == nullptr);
+        assert(l.tail() == l.begin());
 
         delete new_node;
     }
@@ -555,6 +610,7 @@ int main() {
         assert(s->get_next() == t);
         assert(t->get_prev() == s);
         assert(t->get_next() == nullptr);
+        assert(l.tail() == t);
 
         delete n1;
         delete n2;
@@ -587,6 +643,7 @@ int main() {
         assert(a->get_key() == 10);
         assert(b->get_key() == 20);
         assert(c->get_key() == 30);
+        assert(l.tail() == d);
 
         delete n1;
         delete n2;
@@ -623,6 +680,7 @@ int main() {
         assert(c->get_key() == 3);
         assert(d->get_key() == 4);
         assert(e->get_key() == 5);
+        assert(l.tail() == e);
 
         delete n1;
         delete n2;
@@ -656,6 +714,7 @@ int main() {
         assert(a->get_key() == 10);
         assert(b->get_key() == 20);
         assert(c->get_key() == 30);
+        assert(l.tail() == c);
 
         delete n1;
         delete n2;
@@ -687,6 +746,7 @@ int main() {
         assert(a->get_next() == b);
         assert(b->get_prev() == a);
         assert(b->get_next() == nullptr);
+        assert(l.tail() == b);
 
         delete n1;
         delete n2;
@@ -714,6 +774,7 @@ int main() {
 
         assert(a->get_key() == 10);
         assert(b->get_key() == 20);
+        assert(l.tail() == b);
 
         delete n1;
         delete n2;
@@ -749,6 +810,7 @@ int main() {
         assert(b->get_key() == 20);
         assert(c->get_key() == 40);
         assert(d->get_key() == 50);
+        assert(l.tail() == d);
 
         delete n1;
         delete n2;
@@ -785,6 +847,7 @@ int main() {
         assert(tail != nullptr);
         assert(tail->get_prev()->get_key() == 20);
         assert(tail->get_next() == nullptr);
+        assert(tail == l.tail());
 
         delete n1;
         delete n2;
@@ -820,6 +883,7 @@ int main() {
         assert(result3 != nullptr);
         assert(result3->get_key() == 30);
         assert(result3->get_next() == nullptr);
+        assert(result3 == l.tail());
 
         // Test 4: find(k) with k < head->k
         Node<int, int>* result4 = l.find(5);
@@ -868,11 +932,13 @@ int main() {
         assert(result3 != nullptr);
         assert(result3->get_key() == 30);
         assert(result3->get_next() == nullptr);
+        assert(result3 == tail);
+        assert(result3 == l.tail());
 
         // Test 4: k < node->k
         Node<int, int>* result4 = l.find_from(head->get_next(), 15);
         assert(result4 != nullptr);
-        assert(result4->get_key() == 10); // should return prev when k < node->k
+        assert(result4->get_key() == 10); // should return prev when k < Node->k
 
         // Test 5: k > node->k && k < node->next->k
         Node<int, int>* result5 = l.find_from(head, 15);
@@ -900,6 +966,7 @@ int main() {
         assert(l.lower_bound(10)->get_key() == 10);
         assert(l.lower_bound(11)->get_key() == 20);
         assert(l.lower_bound(30)->get_key() == 30);
+        assert(l.lower_bound(30) == l.tail());
 
         delete n1;
         delete n2;
@@ -948,9 +1015,12 @@ int main() {
 
         assert(l.successor(30) == nullptr);
         assert(l.predeccessor(30)->get_key() == 20);
+        assert(l.predeccessor(30) == l.get_node(20));
 
         assert(l.successor(20)->get_key() == 30);
         assert(l.predeccessor(20)->get_key() == 10);
+        assert(l.successor(20) == l.tail());
+        assert(l.predeccessor(20) == l.get_node(10));
 
         delete n1;
         delete n2;
@@ -985,6 +1055,7 @@ int main() {
         assert(a->get_val() == 101);
         assert(b->get_val() == 222);
         assert(c->get_val() == 303);
+        assert(c == l.tail());
 
         delete n1;
         delete n2;
@@ -1030,6 +1101,7 @@ int main() {
         l.erase();
 
         assert(l.begin() == nullptr);
+        assert(l.tail() == nullptr);
         assert(l.length() == 0);
 
         assert(n1 != nullptr);
@@ -1063,6 +1135,7 @@ int main() {
         assert(l.begin()->get_key() == 10);
         assert(l.begin()->get_next()->get_key() == 20);
         assert(l.begin()->get_next()->get_next()->get_key() == 30);
+        assert(l.tail()->get_key() == 30);
 
         delete n1;
         delete n2;
@@ -1086,7 +1159,9 @@ int main() {
 
         assert(l1.length() == 3);
         assert(l2.begin() == nullptr);
+        assert(l2.tail() == nullptr);
         assert(l2.length() == 0);
+        assert(l1.tail()->get_key() == 30);
 
         delete n1;
         delete n2;
@@ -1109,7 +1184,9 @@ int main() {
 
         assert(l1.length() == 3);
         assert(l2.begin() == nullptr);
+        assert(l2.tail() == nullptr);
         assert(l2.length() == 0);
+        assert(l1.tail()->get_key() == 30);
 
         delete n1;
         delete n2;
@@ -1137,6 +1214,7 @@ int main() {
 
         assert(l1.length() == 5);
         assert(l2.begin() == nullptr);
+        assert(l2.tail() == nullptr);
         assert(l2.length() == 0);
 
         Node<int, int>* n1p = l1.begin();
@@ -1150,6 +1228,7 @@ int main() {
         assert(n3p->get_key() == 3);
         assert(n4p->get_key() == 4);
         assert(n5p->get_key() == 5);
+        assert(l1.tail() == n5p);
 
         delete a1;
         delete a2;
@@ -1185,6 +1264,7 @@ int main() {
             cur = cur->get_next();
         }
         assert(cur == nullptr);
+        assert(l1.tail()->get_key() == 5);
 
         delete a2;
         delete b1;
@@ -1227,6 +1307,7 @@ int main() {
             cur = cur->get_next();
         }
         assert(cur == nullptr);
+        assert(l1.tail()->get_key() == 8);
 
         delete a1;
         delete a3;
@@ -1274,6 +1355,7 @@ int main() {
             cur = cur->get_next();
         }
         assert(cur == nullptr);
+        assert(l1.tail()->get_key() == 9);
 
         delete a1;
         delete a2;
@@ -1320,6 +1402,7 @@ int main() {
             cur = cur->get_next();
         }
         assert(cur == nullptr);
+        assert(l1.tail()->get_key() == 8);
 
         delete a4;
         delete a5;
@@ -1491,5 +1574,6 @@ int main() {
 
     std::cout << "MyList remove(Node<K,V>*) tests passed!\n";
 
+    std::cout << "All tests passed!\n";
     return 0;
 }

@@ -5,6 +5,7 @@ template <typename K, typename V>
 class MyList{
 private:
     Node<K, V>* start;
+    Node<K, V>* end;
 
     std::size_t size;
 
@@ -12,18 +13,20 @@ public:
     //constructors
     MyList(){
         start = nullptr;
+        end = nullptr;
         size = 0;
     }
 
     MyList(Node<K, V>* start_n){
         if(start_n == nullptr) {
             start = nullptr;
+            end = nullptr;
             size = 0;
             return;
         }
 
         this->start = new Node<K, V>(start_n->get_key(), start_n->get_val());
-
+        this->end = this->start;
         size = 1;
     }
 
@@ -39,12 +42,14 @@ public:
         }
 
         Node<K, V>* tmp1 = start;
+        end = start;
 
         while(tmp2 != nullptr){
             Node<K, V>* next = new Node<K, V>(tmp2->get_key(), tmp2->get_val());
             next->set_prev(tmp1);
             tmp1->set_next(next);
 
+            end = next;
             tmp2 = tmp2->get_next();
             tmp1 = next;
         }
@@ -52,9 +57,11 @@ public:
 
     MyList(MyList<K, V>&& other) noexcept{
         this->start = other.begin();
+        this->end = other.tail();
         this->size = other.length();
 
         other.start = nullptr;
+        other.end = nullptr;
         other.size = 0;
     }
 
@@ -64,9 +71,11 @@ public:
             erase();
 
             this->start = other.begin();
+            this->end = other.tail();
             this->size = other.length();
 
             other.start = nullptr;
+            other.end = nullptr;
             other.size = 0;
         }
 
@@ -80,12 +89,14 @@ public:
             Node<K, V>* tmp = other.begin();
             if(tmp == nullptr){
                 start = nullptr;
+                end = nullptr;
                 size = 0;
                 return *this;
             }
 
             start = new Node<K, V>(tmp->get_key(), tmp->get_val());
             Node<K, V>* curr = start;
+            end = start;
             tmp = tmp->get_next();
 
             while(tmp != nullptr){
@@ -93,6 +104,7 @@ public:
                 curr->set_next(next);
                 next->set_prev(curr);
 
+                end = next;
                 curr = next;
                 tmp = tmp->get_next();
             }
@@ -105,6 +117,10 @@ public:
     //operations
     Node<K, V>* begin() const{
         return start;
+    }
+
+    Node<K, V>* tail() const{
+        return end;
     }
 
     std::size_t length() const{
@@ -124,10 +140,12 @@ public:
 
         if(start == nullptr){
             start = el;
+            end = el;
             size = 1;
             return el;
         }
 
+        //new head
         if(el->get_key() < start->get_key()){
             el->set_next(start);
             start->set_prev(el);
@@ -136,6 +154,7 @@ public:
             return el;
         }
 
+        //find insertion point
         Node<K, V>* tmp = start;
         while(tmp->get_next() != nullptr && tmp->get_next()->get_key() <= el->get_key()){
             tmp = tmp->get_next();
@@ -146,6 +165,9 @@ public:
 
         if(tmp->get_next() != nullptr){
             tmp->get_next()->set_prev(el);
+        }
+        else {
+            end = el;
         }
 
         tmp->set_next(el);
@@ -168,6 +190,9 @@ public:
 
         if (tmp->get_next() != nullptr) {
             tmp->get_next()->set_prev(tmp->get_prev());
+        }
+        else{
+            end = tmp->get_prev();
         }
 
         delete tmp;
@@ -196,6 +221,9 @@ public:
 
         if (tmp->get_next() != nullptr) {
             tmp->get_next()->set_prev(tmp->get_prev());
+        }
+        else{
+            end = tmp->get_prev();
         }
 
         delete tmp;
@@ -379,7 +407,11 @@ public:
             curr2 = curr2->get_next();
         }
 
-        //insert any left elements from L2
+        if(curr1->get_next() == nullptr){
+            end = curr1;
+        }
+
+        //insert any left elements from L2 infront
         while(curr2 != nullptr && curr1->get_key() > curr2->get_key()){
             Node<K, V>* to_add = new Node<K, V>(curr2->get_key(), curr2->get_val());
             
@@ -395,8 +427,11 @@ public:
             curr1->set_prev(to_add);
             to_add->set_next(curr1);
             
+            end = curr2;
             curr2 = curr2->get_next();
         }
+        
+        //insert any left elements from L2 at the end
         while(curr2 != nullptr){
             Node<K, V>* to_add = new Node<K, V>(curr2->get_key(), curr2->get_val());
 
@@ -405,6 +440,7 @@ public:
             to_add->set_next(nullptr);
 
             curr1 = curr1->get_next();
+            end = curr1;
             curr2 = curr2->get_next();
         }
 
@@ -422,7 +458,9 @@ public:
         }
         size = 0;
         start = nullptr;
+        end = nullptr;
     }
+    
     ~MyList(){
         erase();
     }
