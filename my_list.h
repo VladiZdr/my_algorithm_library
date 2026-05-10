@@ -197,6 +197,10 @@ public:
 
         delete tmp;
         size--;
+        if(size == 0) {
+            start = nullptr;
+            end = nullptr;
+        }
         return true;
     }
 
@@ -205,29 +209,29 @@ public:
         if (tmp == nullptr) {
             return false;
         }
-        if(tmp == start){
-            start = start->get_next();
-            if(start != nullptr){
-                start->set_prev(nullptr);
-            }
-            delete tmp;
-            size--;
-            return true;
-        }
 
+        //if not head
         if (tmp->get_prev() != nullptr) {
             tmp->get_prev()->set_next(tmp->get_next());
         }
+        else{
+            this->start = tmp->get_next();
+        }
 
+        //if not tail
         if (tmp->get_next() != nullptr) {
             tmp->get_next()->set_prev(tmp->get_prev());
         }
         else{
-            end = tmp->get_prev();
+            this->end = tmp->get_prev();
         }
 
         delete tmp;
         size--;
+        if(size == 0) {
+            start = nullptr;
+            end = nullptr;
+        }
         return true;
     }
 
@@ -244,7 +248,8 @@ public:
         return nullptr;
     }
     
-    // Returns node with key = k or the node with the largest key < k of list
+    // Returns node with largest key <= k
+    // or start if all keys in list are > k
     Node<K, V>* find(const K& k) const{
         Node<K, V>* tmp = start;
         if(tmp == nullptr){
@@ -263,7 +268,9 @@ public:
         return tmp;
     }
 
-    //return node with key = k or the node with the largest key < k of list from start_node
+    // Starting search from start_node
+    // returns node with largest key <= k
+    // or start_node if all keys in list are > k
     Node<K, V>* find_from(Node<K, V>* start_node, const K& k) const{
         if(start_node == nullptr){
             return find(k);

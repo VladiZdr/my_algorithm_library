@@ -1208,7 +1208,7 @@ void test_remove_node_with_multiple_levels() {
     
     // Verify node is removed from all levels it appeared on
     auto levels_after = skiplist.get_levels();
-    for (int i = 0; i < level_count; i++) {
+    for (int i = 0; i < level_count && static_cast<size_t>(i) < levels_after.size(); i++) {
         assert(levels_after[i]->get_node(20) == nullptr);
     }
     
@@ -1220,7 +1220,6 @@ void test_remove_node_with_multiple_levels() {
     delete node1;
     delete node2;
     delete node3;
-    
     ////std::cout << "remove node with multiple levels test passed!" << std::endl;
 }
 
@@ -1435,12 +1434,207 @@ void test_update_tail_node() {
     assert(levels[0]->get_node(10)->get_val() == 100);
     assert(levels[0]->get_node(20)->get_val() == 200);
     
-    // Clean up original nodes
     delete node1;
     delete node2;
     delete node3;
     
     //std::cout << "update tail node test passed!" << std::endl;
+}
+
+void test_min_after_removals() {
+    SkipList<int, int> skiplist;
+    
+    // Insert multiple nodes
+    Node<int, int>* node1 = new Node<int, int>(10, 100);
+    Node<int, int>* node2 = new Node<int, int>(20, 200);
+    Node<int, int>* node3 = new Node<int, int>(30, 300);
+    Node<int, int>* node4 = new Node<int, int>(40, 400);
+    skiplist.insert(node1);
+    skiplist.insert(node2);
+    skiplist.insert(node3);
+    skiplist.insert(node4);
+    
+    // Verify initial min
+    auto min_node = skiplist.min();
+    assert(min_node->get_key() == 10);
+    // Remove min node
+    assert(skiplist.remove(10));
+    
+    // Verify min changed to next smallest
+    min_node = skiplist.min();
+    assert(min_node != nullptr);
+    assert(min_node->get_key() == 20);
+    assert(min_node->get_val() == 200);
+    // Remove another node
+    assert(skiplist.remove(20));
+    
+    min_node = skiplist.min();
+    assert(min_node->get_key() == 30);
+    // Remove all but one
+    assert(skiplist.remove(30));
+    
+    min_node = skiplist.min();
+    assert(min_node->get_key() == 40);
+    assert(min_node == skiplist.tail());
+    
+    // Remove last node
+    assert(skiplist.remove(40));
+    min_node = skiplist.min();
+    assert(min_node == nullptr); // Should be nullptr for empty list
+    
+    delete node1;
+    delete node2;
+    delete node3;
+    delete node4;
+    
+    //std::cout << "min after removals test passed!" << std::endl;
+}
+
+void test_max_empty_list() {
+    SkipList<int, int> skiplist;
+    
+    // Test max() on empty list
+    auto max_node = skiplist.max();
+    assert(max_node == nullptr);
+    
+    //std::cout << "max empty list test passed!" << std::endl;
+}
+
+void test_max_single_node() {
+    SkipList<int, int> skiplist;
+    
+    // Insert single node
+    Node<int, int>* node1 = new Node<int, int>(10, 100);
+    skiplist.insert(node1);
+    
+    // Test max() on single node list
+    auto max_node = skiplist.max();
+    assert(max_node != nullptr);
+    assert(max_node->get_key() == 10);
+    assert(max_node->get_val() == 100);
+    assert(max_node == skiplist.tail()); // max should be same as end
+    
+    delete node1;
+    
+    //std::cout << "max single node test passed!" << std::endl;
+}
+
+void test_max_multiple_nodes() {
+    SkipList<int, int> skiplist;
+    
+    // Insert multiple nodes in random order
+    Node<int, int>* node1 = new Node<int, int>(30, 300);
+    Node<int, int>* node2 = new Node<int, int>(10, 100);
+    Node<int, int>* node3 = new Node<int, int>(20, 200);
+    Node<int, int>* node4 = new Node<int, int>(40, 400);
+    skiplist.insert(node1);
+    skiplist.insert(node2);
+    skiplist.insert(node3);
+    skiplist.insert(node4);
+    
+    // Test max() on multiple nodes
+    auto max_node = skiplist.max();
+    assert(max_node != nullptr);
+    assert(max_node->get_key() == 40); // Should be the largest key
+    assert(max_node->get_val() == 400);
+    assert(max_node == skiplist.tail()); // max should be same as end
+    
+    delete node1;
+    delete node2;
+    delete node3;
+    delete node4;
+    
+    //std::cout << "max multiple nodes test passed!" << std::endl;
+}
+
+void test_max_after_insertions() {
+    SkipList<int, int> skiplist;
+    
+    // Insert initial nodes
+    Node<int, int>* node1 = new Node<int, int>(20, 200);
+    Node<int, int>* node2 = new Node<int, int>(30, 300);
+    skiplist.insert(node1);
+    skiplist.insert(node2);
+    
+    // Verify current max
+    auto max_node = skiplist.max();
+    assert(max_node->get_key() == 30);
+    
+    // Insert larger node
+    Node<int, int>* node3 = new Node<int, int>(40, 400);
+    skiplist.insert(node3);
+    
+    // Verify max changed
+    max_node = skiplist.max();
+    assert(max_node != nullptr);
+    assert(max_node->get_key() == 40);
+    assert(max_node->get_val() == 400);
+    
+    // Insert smaller node (max should stay the same)
+    Node<int, int>* node4 = new Node<int, int>(10, 100);
+    skiplist.insert(node4);
+    
+    max_node = skiplist.max();
+    assert(max_node->get_key() == 40); // Should still be 40
+    
+    delete node1;
+    delete node2;
+    delete node3;
+    delete node4;
+    
+    //std::cout << "max after insertions test passed!" << std::endl;
+}
+
+void test_max_after_removals() {
+    SkipList<int, int> skiplist;
+    
+    // Insert multiple nodes
+    Node<int, int>* node1 = new Node<int, int>(10, 100);
+    Node<int, int>* node2 = new Node<int, int>(20, 200);
+    Node<int, int>* node3 = new Node<int, int>(30, 300);
+    Node<int, int>* node4 = new Node<int, int>(40, 400);
+    skiplist.insert(node1);
+    skiplist.insert(node2);
+    skiplist.insert(node3);
+    skiplist.insert(node4);
+    
+    // Verify initial max
+    auto max_node = skiplist.max();
+    assert(max_node->get_key() == 40);
+    
+    // Remove max node
+    skiplist.remove(40);
+    
+    // Verify max changed to next largest
+    max_node = skiplist.max();
+    assert(max_node != nullptr);
+    assert(max_node->get_key() == 30);
+    assert(max_node->get_val() == 300);
+    
+    // Remove another node
+    skiplist.remove(30);
+    
+    max_node = skiplist.max();
+    assert(max_node->get_key() == 20);
+    
+    // Remove all but one
+    skiplist.remove(20);
+    
+    max_node = skiplist.max();
+    assert(max_node->get_key() == 10);
+    
+    // Remove last node
+    skiplist.remove(10);
+    
+    max_node = skiplist.max();
+    assert(max_node == nullptr); // Should be nullptr for empty list
+    
+    delete node1;
+    delete node2;
+    delete node3;
+    delete node4;
+    
+    //std::cout << "max after removals test passed!" << std::endl;
 }
 
 int main() {
@@ -1452,12 +1646,14 @@ int main() {
         test_copy_constructor_empty_list();
         test_copy_constructor_one_node();
         test_copy_constructor_three_nodes_deep();
+        //std::cout<< "Passed copy\n";
         
         // Move constructor tests
         test_move_constructor_nullptr();
         test_move_constructor_empty_list();
         test_move_constructor_one_node();
         test_move_constructor_three_nodes();
+        //std::cout<< "Passed move\n";
         
         // Copy assignment operator tests
         test_copy_assignment_both_empty();
@@ -1470,17 +1666,20 @@ int main() {
         test_move_assignment_other_empty_this_three();
         test_move_assignment_this_two_other_one();
         test_move_assignment_this_two_other_three();
+        //std::cout<< "Passed assignments\n";
         
         // find tests
         test_find_key_not_in_list();
         test_find_key_in_list();
         test_find_key_smaller_than_head();
         test_find_key_bigger_than_tail();
+        //std::cout<< "Passed find\n";
         
         // insert tests
         test_insert_new_head();
         test_insert_new_tail();
         test_insert_middle_node();
+        //std::cout<< "Passed insert\n";
         
         // remove tests
         test_remove_head_node();
@@ -1489,15 +1688,25 @@ int main() {
         test_remove_non_existent_key();
         test_remove_from_empty_list();
         test_remove_node_with_multiple_levels();
+        //std::cout<< "Passed remove\n";
 
         // update tests
         test_update_multiple_times();
         test_update_head_node();
         test_update_middle_node();
         test_update_tail_node();
+        //std::cout<< "Passed update\n";
+        
+        // min/max tests
+        test_min_after_removals();
+        test_max_empty_list();
+        test_max_single_node();
+        test_max_multiple_nodes();
+        test_max_after_insertions();
+        test_max_after_removals();
+
         
         std::cout << "Passed iteration: "<< i << std::endl;
-
     }
     
     

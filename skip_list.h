@@ -2,6 +2,7 @@
 #include "my_list.h"
 #include <random>
 #include <ctime>
+#include <iostream>
 
 template <typename K, typename V>
 class SkipList {
@@ -16,6 +17,13 @@ private:
             return;
         }
         levels = new_levels;
+    }
+
+    void trim_empty_top_levels(){
+        while(levels.size() > 1 && levels.back()->length() == 0){
+            delete levels.back();
+            levels.pop_back();
+        }
     }
     
     size_t get_random_levels() {
@@ -78,9 +86,15 @@ public:
 
     //return first node with the largest key <= k or tail of list
     Node<K,V>* find(const K& key){
+        //check for correct structure before find (might be wrong after move/copy/set operations)
+        trim_empty_top_levels();
+        if(levels.empty() || levels.back()->begin() == nullptr){
+            return nullptr;
+        }
+
         //start from top level find
         size_t curr_level = levels.size() - 1;
-        //find in top level node with largest key <= key
+        //find in top level, node with largest key <= key or head
         Node<K,V>* curr_find = levels[curr_level]->find(key);
 
         while(curr_level > 0 && curr_find != nullptr){
@@ -135,7 +149,7 @@ public:
     bool remove(const K& key){
         //find node to remove
         Node<K,V>* node = find(key);
-        //if not found find returns tail
+        //if not found find returns head
         if(node == nullptr || node->get_key() != key){
             return false;
         }
@@ -151,6 +165,7 @@ public:
             curr_level++;
         }
 
+        trim_empty_top_levels();
         return true;
     }
 
@@ -184,17 +199,17 @@ public:
 
 
     //get last/max node
-    Node<K,V>* end(){
+    Node<K,V>* tail(){
         if(levels.empty()){
             return nullptr;
         }
-        return levels[0]->end();
+        return levels[0]->tail();
     }
     Node<K,V>* max(){
         if(levels.empty()){
             return nullptr;
         }
-        return levels[0]->end();
+        return levels[0]->tail();
     }
     
     //cleanup
@@ -204,6 +219,7 @@ public:
         }
         levels.clear();
     }
+
     ~SkipList(){
         erase();
     }

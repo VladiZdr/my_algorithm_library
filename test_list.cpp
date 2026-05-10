@@ -895,6 +895,11 @@ int main() {
         assert(result5 != nullptr);
         assert(result5->get_key() == 10); // largest key < 15
 
+        // Test 6: find(k) with k > tail->k
+        Node<int, int>* result6 = l.find(35);
+        assert(result6 != nullptr);
+        assert(result6->get_key() == 30); // largest key < 35
+
         delete n1;
         delete n2;
         delete n3;
@@ -944,6 +949,11 @@ int main() {
         Node<int, int>* result5 = l.find_from(head, 15);
         assert(result5 != nullptr);
         assert(result5->get_key() == 10); // largest key < 15
+
+        // Test 6: find(k) with k > tail->k
+        Node<int, int>* result6 = l.find(35);
+        assert(result6 != nullptr);
+        assert(result6->get_key() == 30); // largest key < 35
 
         delete n1;
         delete n2;

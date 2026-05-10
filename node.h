@@ -142,4 +142,8 @@ public:
     void set_val(const V& new_val){
         val_ = new_val;
     }
+
+    ~Node(){
+        erase();
+    }
 };
