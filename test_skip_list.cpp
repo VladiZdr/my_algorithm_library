@@ -1637,6 +1637,68 @@ void test_max_after_removals() {
     //std::cout << "max after removals test passed!" << std::endl;
 }
 
+void check_structure_even(SkipList<int, int>& skiplist, size_t* node_levels, size_t amount){
+    //check structure vertically and horizontally
+    for(int i = 0 ; i < amount - 2 ; i += 2){
+        Node<int, int>* node = skiplist.find(i);
+        assert(node != nullptr);
+
+        //check horizontally
+        assert(node->get_key() == i);
+        assert(node->get_next()->get_key() == i + 2);
+
+        //check vertically
+        for(int j = 0 ; j < node_levels[i] ; j++){
+            assert(node->get_key() == i);
+            node = node->get_up();
+            if(j < node_levels[i] - 1){
+                assert(node != nullptr);
+            }
+        }
+    }
+}
+
+
+void test_multiple_operations(size_t amount){
+    size_t* node_levels = new size_t[amount];
+    SkipList<int, int> skiplist;
+
+    // insert amount new nodes
+    for(int i = 0 ; i < amount ; i++){
+        Node<int, int>* new_node = new Node<int, int>(i, i * 100);
+        node_levels[i] = skiplist.insert(new_node);
+        delete new_node;
+    }
+
+    // remove odd keys
+    for(int i = 1 ; i < amount ; i += 2){
+        assert(skiplist.find(i - 1)->get_key() == i - 1);
+        assert(skiplist.find(i)->get_key() == i);
+
+        skiplist.remove(i);
+        assert(skiplist.find(i)->get_key() == i - 1);
+    }
+
+    assert(skiplist.tail()->get_key() == amount - 2);
+
+    check_structure_even(skiplist, node_levels, amount);
+
+    // updates
+    for(int i = 0 ; i < amount ; i += 2){
+        assert(skiplist.update(i, i * 200));
+    }
+
+    check_structure_even(skiplist, node_levels, amount);
+
+    assert(skiplist.find(0)->get_val() == 0);
+    assert(skiplist.begin()->get_val() == 0);
+    assert(skiplist.find(2)->get_val() == 400);
+    assert(skiplist.tail()->get_val() == (amount - 2) * 200);
+
+
+    delete[] node_levels;
+}
+
 int main() {
     for(int i = 1 ; i <= 10000 ; i++){
         test_default_constructor();
@@ -1705,11 +1767,12 @@ int main() {
         test_max_after_insertions();
         test_max_after_removals();
 
-        
-        std::cout << "Passed iteration: "<< i << std::endl;
     }
+    std::cout << "Passed general tests\n";
     
-    
+    // Parameter must be divideable by 4
+    test_multiple_operations(10000);
+
     std::cout << "All tests passed successfully!" << std::endl;
     return 0;
 }

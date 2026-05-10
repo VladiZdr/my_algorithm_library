@@ -169,11 +169,11 @@ public:
         return true;
     }
 
-    //update first node valuewith key on lowest level (higher level nodes are not maintained)
+    //update first node value with key on lowest level (higher level nodes are not maintained)
     bool update(const K& key, const V& value){
         //find node to update
         Node<K,V>* node = find(key);
-        //if not found find returns tail
+        //if not found find returns head
 
         if(node == nullptr || node->get_key() != key){
             return false;
