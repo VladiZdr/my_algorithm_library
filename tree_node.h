@@ -15,11 +15,68 @@ public:
     TreeNode(K key, V value) : color(RED), key(key), value(value), left(nullptr), right(nullptr), parent(nullptr) {}
     TreeNode(K key, V value, TreeNode* parent) : color(RED), key(key), value(value), left(nullptr), right(nullptr), parent(parent) {}
     TreeNode(K key, V value, TreeNode* parent, TreeNode* left, TreeNode* right) : color(RED), key(key), value(value), left(left), right(right), parent(parent) {}
+    TreeNode(K key, V value, Color color) : color(color), key(key), value(value), left(nullptr), right(nullptr), parent(nullptr) {}
+
+    // operations
+
+    void rotate_left() {
+        if (this == nullptr) {
+            return;
+        }
+        
+        TreeNode<K, V>* parent = this->get_parent();
+        TreeNode<K, V>* right_child = this->get_right();
+        if (right_child == nullptr) {
+            return;
+        }
+        
+        // fix node's neighbors
+        this->set_right(right_child->get_left());
+        this->set_parent(right_child);
+
+        // fix former right child's neighbors
+        right_child->set_left(this);
+        right_child->set_parent(parent);
+        if (parent != nullptr) {
+            if (parent->get_left() == this) {
+                parent->set_left(right_child);
+            } else {
+                parent->set_right(right_child);
+            }
+        }
+    }
+
+    void rotate_right() {
+        if (this == nullptr) {
+            return;
+        }
+        
+        TreeNode<K, V>* parent = this->get_parent();
+        TreeNode<K, V>* left_child = this->get_left();
+        if (left_child == nullptr) {
+            return;
+        }
+        
+        // fix node's neighbors
+        this->set_left(left_child->get_right());
+        this->set_parent(left_child);
+
+        // fix former left child's neighbors
+        left_child->set_right(this);
+        left_child->set_parent(parent);
+        if (parent != nullptr) {
+            if (parent->get_left() == this) {
+                parent->set_left(left_child);
+            } else {
+                parent->set_right(left_child);
+            }
+        }
+    }
 
     // Destructor
     ~TreeNode() {
-        delete left;
-        delete right;
+        if(left != nullptr) delete left;
+        if(right != nullptr) delete right;
     }
     
     // Getters
