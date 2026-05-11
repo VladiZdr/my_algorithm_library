@@ -1771,7 +1771,8 @@ int main() {
     std::cout << "Passed general tests\n";
     
     // Parameter must be divideable by 4
-    test_multiple_operations(10000);
+    size_t amount_of_nodes = 10000;
+    test_multiple_operations(amount_of_nodes);
 
     std::cout << "All tests passed successfully!" << std::endl;
     return 0;

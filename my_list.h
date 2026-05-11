@@ -114,6 +114,7 @@ public:
 
         return *this;
     }
+
     //operations
     Node<K, V>* begin() const{
         return start;
@@ -175,7 +176,7 @@ public:
         return el;
     }
 
-    //remove node by key
+    //remove first node with key k
     bool remove(const K& k){
         Node<K, V>* tmp = get_node(k);
         if (tmp == nullptr) {
@@ -339,7 +340,7 @@ public:
         return tmp == nullptr ? tmp : tmp->get_prev();
     }
     
-    //update
+    // update first node with key k to value v
     bool update(const K& k, const V& v){
         Node<K, V>* tmp = get_node(k);
 
@@ -350,7 +351,7 @@ public:
         return true;
     }
 
-    //rank(x): how many elements in list with key < k
+    // rank(x): how many elements in list with key < k
     std::size_t rank(const K& k) const{
         Node<K, V>* tmp = start;
         

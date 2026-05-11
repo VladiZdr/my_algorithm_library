@@ -84,17 +84,16 @@ public:
         return levels;
     }
 
-    //return first node with the largest key <= k or tail of list
+    //return first node with the largest key <= k or head of list
     Node<K,V>* find(const K& key){
-        //check for correct structure before find (might be wrong after move/copy/set operations)
+        //check for correct structure before find
         trim_empty_top_levels();
         if(levels.empty() || levels.back()->begin() == nullptr){
             return nullptr;
         }
 
-        //start from top level find
-        size_t curr_level = levels.size() - 1;
         //find in top level, node with largest key <= key or head
+        size_t curr_level = levels.size() - 1;
         Node<K,V>* curr_find = levels[curr_level]->find(key);
 
         while(curr_level > 0 && curr_find != nullptr){
@@ -102,7 +101,7 @@ public:
             curr_level--;
             curr_find = curr_find->get_down();
 
-            //find in next level node with largest key <= key
+            //find in next level node with largest key <= key or head
             if(curr_find->get_key() > key){
                 curr_find = levels[curr_level]->find(key);
             }
@@ -115,7 +114,7 @@ public:
         return curr_find;
     }
 
-    //insert on random amount of levels in ascending order
+    //insert on random amount of levels from bottom up
     size_t insert(Node<K,V>* node){
         //determine how many levels insert 
         size_t random_levels = get_random_levels() + 1;
@@ -145,7 +144,7 @@ public:
         return random_levels;
     }
 
-    //remove first node with key
+    //remove first node with key k
     bool remove(const K& key){
         //find node to remove
         Node<K,V>* node = find(key);
@@ -197,6 +196,13 @@ public:
         return levels[0]->begin();
     }
 
+    //get number of unique nodes in list
+    size_t length(){
+        if(levels.empty()){
+            return 0;
+        }
+        return levels[0]->length();
+    }
 
     //get last/max node
     Node<K,V>* tail(){
